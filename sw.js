@@ -1,4 +1,4 @@
-const CACHE_NAME = 'offline-space-v1';
+const CACHE_NAME = 'shanti-offline-v1';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -15,7 +15,6 @@ self.addEventListener('install', (event) => {
         return cache.addAll(urlsToCache);
       })
   );
-  // Force the waiting service worker to become active
   self.skipWaiting();
 });
 
@@ -33,7 +32,6 @@ self.addEventListener('activate', (event) => {
       );
     })
   );
-  // Take control of all pages immediately
   return self.clients.claim();
 });
 
@@ -42,20 +40,16 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
-        // Cache hit - return response
         if (response) {
           return response;
         }
-        // Clone the request
         const fetchRequest = event.request.clone();
         
         return fetch(fetchRequest).then((response) => {
-          // Check if valid response
           if (!response || response.status !== 200 || response.type !== 'basic') {
             return response;
           }
           
-          // Clone the response
           const responseToCache = response.clone();
           
           caches.open(CACHE_NAME).then((cache) => {
@@ -66,7 +60,6 @@ self.addEventListener('fetch', (event) => {
         });
       })
       .catch(() => {
-        // Return cached index.html as fallback
         return caches.match('/index.html');
       })
   );
