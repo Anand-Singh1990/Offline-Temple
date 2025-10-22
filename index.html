@@ -3,130 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#1a0a00">
+    <meta name="theme-color" content="#000000">
     <meta name="description" content="A peaceful offline space for reflection">
     <title>Shanti - Offline Sanctuary</title>
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="status-bar" id="statusBar">
-        <p id="statusMessage">Please turn on flight mode or disconnect from the internet</p>
+    <!-- Modern Offline Prompt -->
+    <div class="offline-prompt" id="offlinePrompt">
+        <div class="offline-content">
+            <div class="offline-icon">
+                <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+                    <circle cx="40" cy="40" r="38" stroke="currentColor" stroke-width="2" opacity="0.3"/>
+                    <path d="M40 20 L40 40 L55 40" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <div class="airplane-icon">✈️</div>
+            </div>
+            <h2 class="offline-title">Embrace the Disconnect</h2>
+            <p class="offline-description">
+                To begin your journey to inner peace, please turn on airplane mode or disconnect from the internet.
+            </p>
+            <div class="offline-instruction">
+                <span class="instruction-step">Swipe down</span>
+                <span class="instruction-divider">•</span>
+                <span class="instruction-step">Enable airplane mode</span>
+                <span class="instruction-divider">•</span>
+                <span class="instruction-step">Return here</span>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-line"></div>
+        </div>
     </div>
 
-    <div class="container" id="content" style="display: none;">
-        <h1>🕉️ Shanti - A Sacred Pause</h1>
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent" style="display: none;">
         
-        <!-- Ambient Sound Toggle -->
-        <div class="feature-box sound-section">
-            <h3>🎵 Ambient Sounds</h3>
-            <div class="sound-controls">
-                <button id="omSound" class="sound-btn">Om Chanting</button>
-                <button id="bellSound" class="sound-btn">Temple Bell</button>
-                <button id="rainSound" class="sound-btn">Rain</button>
-                <button id="stopSound" class="sound-btn-stop" style="display: none;">Stop Sound</button>
-            </div>
-            <div class="volume-control">
-                <span>Volume:</span>
-                <input type="range" id="volumeSlider" min="0" max="100" value="50">
-            </div>
-        </div>
+        <!-- Hero Section -->
+        <section class="hero-section fade-in-section">
+            <h1 class="hero-title">Shanti</h1>
+            <p class="hero-subtitle">Your offline sanctuary for peace and mindfulness</p>
+            <div class="om-symbol">ॐ</div>
+        </section>
 
-        <!-- Breathing Exercise -->
-        <div class="feature-box breathing-section">
-            <h3>🌬️ Pranayama - Breath Meditation</h3>
-            <p class="feature-desc">Follow the circle's rhythm: Inhale as it grows, exhale as it shrinks</p>
-            <div class="breathing-circle" id="breathingCircle">
-                <p id="breathingText">Click Start</p>
-            </div>
-            <div class="breathing-controls">
-                <button id="breathingBtn" class="btn">Start Pranayama</button>
-            </div>
-            <div class="breathing-stats">
-                <div class="stat-item">
-                    <span class="stat-value" id="breathCount">0</span>
-                    <span class="stat-label">Breaths</span>
+        <!-- Ambient Sounds Section -->
+        <section class="section fade-in-section">
+            <div class="section-label">Sounds</div>
+            <h2 class="section-title">Ambient Meditation</h2>
+            <div class="card sound-card">
+                <div class="sound-grid">
+                    <button class="sound-tile" id="omSound">
+                        <span class="sound-emoji">🕉️</span>
+                        <span class="sound-name">Om</span>
+                    </button>
+                    <button class="sound-tile" id="bellSound">
+                        <span class="sound-emoji">🔔</span>
+                        <span class="sound-name">Bell</span>
+                    </button>
+                    <button class="sound-tile" id="rainSound">
+                        <span class="sound-emoji">🌧️</span>
+                        <span class="sound-name">Rain</span>
+                    </button>
                 </div>
-                <div class="stat-item">
-                    <span class="stat-value" id="breathTime">00:00</span>
-                    <span class="stat-label">Duration</span>
+                <button class="stop-sound" id="stopSound" style="display: none;">Stop Sound</button>
+                <div class="volume-slider-container">
+                    <span class="volume-label">Volume</span>
+                    <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="50">
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Meditation Timer -->
-        <div class="feature-box timer-section">
-            <h3>⏱️ Dhyana - Meditation Timer</h3>
-            <p class="feature-desc">Set your meditation duration and find inner peace</p>
-            <div class="timer-display">
-                <div id="timerDisplay">05:00</div>
-                <div class="progress-ring" id="progressRing">
-                    <svg width="120" height="120">
-                        <circle cx="60" cy="60" r="54" stroke="#ffa500" stroke-width="4" fill="none" opacity="0.2"/>
-                        <circle id="progressCircle" cx="60" cy="60" r="54" stroke="#ffd700" stroke-width="4" fill="none" 
-                                stroke-dasharray="339.292" stroke-dashoffset="0" 
-                                style="transform: rotate(-90deg); transform-origin: center; transition: stroke-dashoffset 1s linear;"/>
+        <!-- Breathing Section -->
+        <section class="section fade-in-section">
+            <div class="section-label">Breathe</div>
+            <h2 class="section-title">Pranayama</h2>
+            <div class="card breath-card">
+                <div class="breath-container">
+                    <div class="breath-circle" id="breathCircle">
+                        <div class="breath-inner-circle"></div>
+                        <p class="breath-text" id="breathText">Begin</p>
+                    </div>
+                </div>
+                <button class="primary-btn" id="breathBtn">Start Breathing</button>
+                <div class="stats-row">
+                    <div class="stat">
+                        <div class="stat-value" id="breathCount">0</div>
+                        <div class="stat-label">Breaths</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="breathTime">00:00</div>
+                        <div class="stat-label">Duration</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Timer Section -->
+        <section class="section fade-in-section">
+            <div class="section-label">Meditate</div>
+            <h2 class="section-title">Dhyana Timer</h2>
+            <div class="card timer-card">
+                <div class="timer-display" id="timerDisplay">05:00</div>
+                <div class="timer-progress">
+                    <svg class="progress-ring" width="200" height="200">
+                        <circle class="progress-ring-bg" cx="100" cy="100" r="90"/>
+                        <circle class="progress-ring-fill" id="progressCircle" cx="100" cy="100" r="90"/>
                     </svg>
                 </div>
-            </div>
-            <div class="timer-controls">
-                <button id="timer5" class="btn-small active">5 min</button>
-                <button id="timer10" class="btn-small">10 min</button>
-                <button id="timer15" class="btn-small">15 min</button>
-                <button id="timer20" class="btn-small">20 min</button>
-            </div>
-            <button id="timerBtn" class="btn">Start Meditation</button>
-        </div>
-
-        <!-- Mantra Counter -->
-        <div class="feature-box mantra-section">
-            <h3>📿 Japa - Mantra Counter</h3>
-            <p class="feature-desc">Digital mala beads for counting your mantras (108 is sacred)</p>
-            <div class="mantra-display">
-                <div class="mantra-count" id="mantraCount">0</div>
-                <p class="mantra-text">ॐ Om Shanti</p>
-                <div class="mala-progress">
-                    <div class="mala-progress-bar" id="malaProgress"></div>
+                <div class="timer-options">
+                    <button class="timer-option active" id="timer5">5</button>
+                    <button class="timer-option" id="timer10">10</button>
+                    <button class="timer-option" id="timer15">15</button>
+                    <button class="timer-option" id="timer20">20</button>
                 </div>
-                <p class="mala-info">
-                    <span id="malaRemaining">108</span> remaining to complete mala
-                </p>
+                <button class="primary-btn" id="timerBtn">Start Meditation</button>
             </div>
-            <div class="mantra-controls">
-                <button id="mantraBtn" class="btn">Chant (+1)</button>
-                <button id="resetMantra" class="btn-small">Reset</button>
+        </section>
+
+        <!-- Mantra Counter Section -->
+        <section class="section fade-in-section">
+            <div class="section-label">Chant</div>
+            <h2 class="section-title">Japa Mala</h2>
+            <div class="card mantra-card">
+                <div class="mantra-count-display" id="mantraCount">0</div>
+                <div class="mantra-text">ॐ Om Shanti</div>
+                <div class="mala-progress-container">
+                    <div class="mala-progress-track">
+                        <div class="mala-progress-fill" id="malaProgress"></div>
+                    </div>
+                    <div class="mala-counter"><span id="malaRemaining">108</span> / 108</div>
+                </div>
+                <div class="mantra-btn-group">
+                    <button class="primary-btn" id="mantraBtn">Chant</button>
+                    <button class="secondary-btn" id="resetMantra">Reset</button>
+                </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Daily Quote -->
-        <div class="feature-box quote-section">
-            <h3>💭 Daily Wisdom</h3>
-            <p class="daily-quote" id="dailyQuote"></p>
-            <button id="newQuote" class="btn-small">New Quote</button>
-        </div>
+        <!-- Wisdom Section -->
+        <section class="section fade-in-section">
+            <div class="section-label">Wisdom</div>
+            <h2 class="section-title">Daily Reflection</h2>
+            <div class="card quote-card">
+                <p class="quote-text" id="dailyQuote"></p>
+                <button class="secondary-btn" id="newQuote">New Quote</button>
+            </div>
+        </section>
 
-        <!-- Wisdom Content -->
-        <div class="wisdom-content">
-            <p class="sanskrit">यदा यदा हि धर्मस्य ग्लानिर्भवति भारत।<br>
-            अभ्युत्थानमधर्मस्य तदात्मानं सृजाम्यहम्॥</p>
-            <p class="translation">"Whenever dharma declines and adharma rises, I manifest myself." - Bhagavad Gita 4.7</p>
+        <!-- Philosophy Section -->
+        <section class="section fade-in-section philosophy-section">
+            <div class="philosophy-content">
+                <div class="verse">
+                    <p class="sanskrit">यदा यदा हि धर्मस्य ग्लानिर्भवति भारत।<br>
+                    अभ्युत्थानमधर्मस्य तदात्मानं सृजाम्यहम्॥</p>
+                    <p class="translation">Whenever dharma declines and adharma rises, I manifest myself. — Bhagavad Gita 4.7</p>
+                </div>
 
-            <p>In this age of constant connectivity, we have forgotten the ancient wisdom of silence. The Vedas teach us that true knowledge comes not from endless consumption of information, but from turning inward - from the practice of <strong>pratyahara</strong>, the withdrawal of senses.</p>
+                <p class="philosophy-text">In this age of constant connectivity, we have forgotten the ancient wisdom of silence. The Vedas teach us that true knowledge comes not from endless consumption of information, but from turning inward.</p>
 
-            <p>When the mind is constantly fed with stimuli, it becomes like a turbulent ocean. But when we embrace stillness, when we disconnect from the external world, the waters become calm. In this calmness, we can see our true reflection - our <strong>Atman</strong>, the eternal self.</p>
+                <div class="verse">
+                    <p class="sanskrit">योगश्चित्तवृत्तिनिरोधः</p>
+                    <p class="translation">Yoga is the cessation of the fluctuations of the mind. — Yoga Sutras 1.2</p>
+                </div>
 
-            <p class="sanskrit">योगश्चित्तवृत्तिनिरोधः</p>
-            <p class="translation">"Yoga is the cessation of the fluctuations of the mind." - Patanjali's Yoga Sutras 1.2</p>
+                <p class="philosophy-text">The great rishis sought enlightenment not in the noise of the world, but in the silence of forests and mountains. They understood that wisdom emerges from the gaps between thoughts.</p>
 
-            <p>The great rishis sought enlightenment not in the noise of the world, but in the silence of forests and mountains. They understood that wisdom emerges from the gaps between thoughts, from the space that opens when we are not constantly distracted.</p>
+                <div class="verse">
+                    <p class="sanskrit">शान्तिः शान्तिः शान्तिः</p>
+                    <p class="translation">Peace, peace, peace.</p>
+                </div>
+            </div>
+        </section>
 
-            <p>Being offline is not a limitation - it is <strong>vairagya</strong>, a conscious detachment from worldly entanglements. It is in these moments of digital tapasya that we can reconnect with something deeper, something eternal that exists beyond the realm of notifications and updates.</p>
+        <!-- Footer -->
+        <footer class="footer fade-in-section">
+            <p>You have reached the end. May this moment bring you closer to inner peace.</p>
+        </footer>
 
-            <p class="sanskrit">शान्तिः शान्तिः शान्तिः</p>
-            <p class="translation">"Peace, peace, peace." - Vedic blessing</p>
-
-            <p class="end-message">You have reached the end. May this moment of offline solitude bring you closer to your inner truth.</p>
-        </div>
     </div>
 
     <script src="app.js"></script>

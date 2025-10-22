@@ -1,105 +1,92 @@
-const statusBar = document.getElementById('statusBar');
-const statusMessage = document.getElementById('statusMessage');
-const content = document.getElementById('content');
+const offlinePrompt = document.getElementById('offlinePrompt');
+const mainContent = document.getElementById('mainContent');
+
+// Intersection Observer for scroll animations
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -100px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, observerOptions);
+
+// Observe all fade-in sections
+document.querySelectorAll('.fade-in-section').forEach(section => {
+    observer.observe(section);
+});
+
+// Online/Offline Status
+function updateStatus() {
+    if (navigator.onLine) {
+        offlinePrompt.style.display = 'flex';
+        mainContent.style.display = 'none';
+    } else {
+        offlinePrompt.style.display = 'none';
+        mainContent.style.display = 'block';
+        
+        // Re-observe sections when going offline
+        setTimeout(() => {
+            document.querySelectorAll('.fade-in-section').forEach(section => {
+                observer.observe(section);
+            });
+        }, 100);
+    }
+}
+
+window.addEventListener('load', updateStatus);
+window.addEventListener('online', updateStatus);
+window.addEventListener('offline', updateStatus);
 
 // Sound Variables
-const omSoundBtn = document.getElementById('omSound');
-const bellSoundBtn = document.getElementById('bellSound');
-const rainSoundBtn = document.getElementById('rainSound');
-const stopSoundBtn = document.getElementById('stopSound');
-const volumeSlider = document.getElementById('volumeSlider');
 let currentAudio = null;
 let currentSoundBtn = null;
 
-// Breathing Exercise Variables
-const breathingCircle = document.getElementById('breathingCircle');
-const breathingText = document.getElementById('breathingText');
-const breathingBtn = document.getElementById('breathingBtn');
-const breathCount = document.getElementById('breathCount');
-const breathTime = document.getElementById('breathTime');
+// Breathing Variables
 let breathingActive = false;
-let breathingInterval;
 let breathCounter = 0;
 let breathTimeSeconds = 0;
 let breathTimeInterval;
 
 // Timer Variables
-const timerDisplay = document.getElementById('timerDisplay');
-const timerBtn = document.getElementById('timerBtn');
-const timer5 = document.getElementById('timer5');
-const timer10 = document.getElementById('timer10');
-const timer15 = document.getElementById('timer15');
-const timer20 = document.getElementById('timer20');
-const progressCircle = document.getElementById('progressCircle');
 let timerActive = false;
 let timerInterval;
 let timerSeconds = 300;
 let selectedMinutes = 5;
 let totalSeconds = 300;
 
-// Mantra Counter Variables
-const mantraCount = document.getElementById('mantraCount');
-const mantraBtn = document.getElementById('mantraBtn');
-const resetMantra = document.getElementById('resetMantra');
-const malaProgress = document.getElementById('malaProgress');
-const malaRemaining = document.getElementById('malaRemaining');
+// Mantra Variables
 let mantraCounter = 0;
 
-// Quote Variables
-const dailyQuote = document.getElementById('dailyQuote');
-const newQuoteBtn = document.getElementById('newQuote');
-
+// Quotes
 const quotes = [
-    "The mind is everything. What you think, you become. - Buddha",
-    "Yoga is the journey of the self, through the self, to the self. - Bhagavad Gita",
-    "When meditation is mastered, the mind is unwavering like the flame of a candle in a windless place. - Bhagavad Gita",
-    "In the midst of movement and chaos, keep stillness inside of you. - Deepak Chopra",
-    "The soul that sees beauty may sometimes walk alone. - Goethe",
-    "Quiet the mind, and the soul will speak. - Ma Jaya Sati Bhagavati",
-    "Meditation brings wisdom; lack of meditation leaves ignorance. - Buddha",
-    "Peace comes from within. Do not seek it without. - Buddha",
-    "The present moment is filled with joy and happiness. If you are attentive, you will see it. - Thich Nhat Hanh",
-    "Silence is not the absence of sound, but the absence of self. - Anthony de Mello"
+    "The mind is everything. What you think, you become.",
+    "Yoga is the journey of the self, through the self, to the self.",
+    "When meditation is mastered, the mind is unwavering like a flame.",
+    "In the midst of movement and chaos, keep stillness inside of you.",
+    "Quiet the mind, and the soul will speak.",
+    "Meditation brings wisdom; lack of meditation leaves ignorance.",
+    "Peace comes from within. Do not seek it without.",
+    "The present moment is filled with joy and happiness.",
+    "Silence is not the absence of sound, but the absence of self."
 ];
 
-// Online/Offline Status
-function updateStatus() {
-    if (navigator.onLine) {
-        statusBar.style.display = 'block';
-        statusBar.style.backgroundColor = '#ff6b6b';
-        statusMessage.textContent = '🌐 Please turn on flight mode or disconnect from the internet to begin';
-        content.style.display = 'none';
-    } else {
-        statusBar.style.display = 'block';
-        statusBar.style.backgroundColor = '#2d5016';
-        statusMessage.textContent = '✈️ You are offline - Welcome to your sanctuary';
-        content.style.display = 'block';
-        
-        setTimeout(() => {
-            statusBar.style.display = 'none';
-        }, 3000);
-    }
-}
-
-window.addEventListener('load', () => {
-    updateStatus();
-    displayRandomQuote();
-});
-window.addEventListener('online', updateStatus);
-window.addEventListener('offline', updateStatus);
-
 // Sound Functions
-function playSound(soundType) {
+document.getElementById('omSound').addEventListener('click', function() {
+    playSound('om', this);
+});
+
+function playSound(type, button) {
     if (currentAudio) {
-        currentAudio.pause();
-        currentAudio = null;
-        if (currentSoundBtn) {
-            currentSoundBtn.classList.remove('active');
-        }
+        currentAudio.stop();
+        if (currentSoundBtn) currentSoundBtn.classList.remove('active');
     }
     
-    // Create Web Audio API oscillator for Om sound
-    if (soundType === 'om') {
+    if (type === 'om') {
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const oscillator = audioContext.createOscillator();
         const gainNode = audioContext.createGain();
@@ -107,140 +94,132 @@ function playSound(soundType) {
         oscillator.connect(gainNode);
         gainNode.connect(audioContext.destination);
         
-        oscillator.frequency.value = 136.1; // Om frequency (C# / 136.1 Hz)
+        oscillator.frequency.value = 136.1;
         oscillator.type = 'sine';
-        gainNode.gain.value = volumeSlider.value / 100;
+        gainNode.gain.value = document.getElementById('volumeSlider').value / 100;
         
         oscillator.start();
         currentAudio = { stop: () => oscillator.stop(), audioContext, gainNode };
-        omSoundBtn.classList.add('active');
-        currentSoundBtn = omSoundBtn;
-        stopSoundBtn.style.display = 'inline-block';
+        button.classList.add('active');
+        currentSoundBtn = button;
+        document.getElementById('stopSound').style.display = 'block';
     }
 }
 
-omSoundBtn.addEventListener('click', () => playSound('om'));
-
-stopSoundBtn.addEventListener('click', () => {
+document.getElementById('stopSound').addEventListener('click', () => {
     if (currentAudio) {
-        if (currentAudio.stop) currentAudio.stop();
+        currentAudio.stop();
         if (currentAudio.audioContext) currentAudio.audioContext.close();
         currentAudio = null;
     }
-    if (currentSoundBtn) {
-        currentSoundBtn.classList.remove('active');
-    }
-    stopSoundBtn.style.display = 'none';
+    if (currentSoundBtn) currentSoundBtn.classList.remove('active');
+    document.getElementById('stopSound').style.display = 'none';
 });
 
-volumeSlider.addEventListener('input', () => {
+document.getElementById('volumeSlider').addEventListener('input', (e) => {
     if (currentAudio && currentAudio.gainNode) {
-        currentAudio.gainNode.gain.value = volumeSlider.value / 100;
+        currentAudio.gainNode.gain.value = e.target.value / 100;
     }
 });
 
-// Note: Bell and Rain sounds would require actual audio files
-// For now, they're disabled but buttons remain visible
-
-// Breathing Exercise Logic
-breathingBtn.addEventListener('click', () => {
+// Breathing Exercise
+document.getElementById('breathBtn').addEventListener('click', function() {
     if (!breathingActive) {
         startBreathing();
+        this.textContent = 'Stop';
     } else {
         stopBreathing();
+        this.textContent = 'Start Breathing';
     }
 });
 
 function startBreathing() {
     breathingActive = true;
-    breathingBtn.textContent = 'Stop';
     breathTimeSeconds = 0;
     
     breathTimeInterval = setInterval(() => {
         breathTimeSeconds++;
         const mins = Math.floor(breathTimeSeconds / 60);
         const secs = breathTimeSeconds % 60;
-        breathTime.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        document.getElementById('breathTime').textContent = 
+            `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     }, 1000);
-    
-    function breatheCycle() {
-        // Inhale (4 seconds)
-        breathingText.textContent = 'Breathe In...';
-        breathingCircle.classList.add('breathe-in');
-        breathingCircle.classList.remove('breathe-out');
-        
-        setTimeout(() => {
-            if (!breathingActive) return;
-            // Hold (4 seconds)
-            breathingText.textContent = 'Hold...';
-            
-            setTimeout(() => {
-                if (!breathingActive) return;
-                // Exhale (4 seconds)
-                breathingText.textContent = 'Breathe Out...';
-                breathingCircle.classList.add('breathe-out');
-                breathingCircle.classList.remove('breathe-in');
-                
-                setTimeout(() => {
-                    if (!breathingActive) return;
-                    // Hold (4 seconds)
-                    breathingText.textContent = 'Hold...';
-                    
-                    setTimeout(() => {
-                        if (!breathingActive) return;
-                        breathCounter++;
-                        breathCount.textContent = breathCounter;
-                        breatheCycle();
-                    }, 4000);
-                }, 4000);
-            }, 4000);
-        }, 4000);
-    }
     
     breatheCycle();
 }
 
+function breatheCycle() {
+    const circle = document.getElementById('breathCircle');
+    const text = document.getElementById('breathText');
+    
+    if (!breathingActive) return;
+    
+    text.textContent = 'Breathe In';
+    circle.classList.add('breathe-in');
+    circle.classList.remove('breathe-out');
+    
+    setTimeout(() => {
+        if (!breathingActive) return;
+        text.textContent = 'Hold';
+        
+        setTimeout(() => {
+            if (!breathingActive) return;
+            text.textContent = 'Breathe Out';
+            circle.classList.add('breathe-out');
+            circle.classList.remove('breathe-in');
+            
+            setTimeout(() => {
+                if (!breathingActive) return;
+                text.textContent = 'Hold';
+                
+                setTimeout(() => {
+                    if (!breathingActive) return;
+                    breathCounter++;
+                    document.getElementById('breathCount').textContent = breathCounter;
+                    breatheCycle();
+                }, 4000);
+            }, 4000);
+        }, 4000);
+    }, 4000);
+}
+
 function stopBreathing() {
     breathingActive = false;
-    breathingBtn.textContent = 'Start Pranayama';
-    breathingCircle.classList.remove('breathe-in', 'breathe-out');
-    breathingText.textContent = 'Click Start';
+    document.getElementById('breathCircle').classList.remove('breathe-in', 'breathe-out');
+    document.getElementById('breathText').textContent = 'Begin';
     clearInterval(breathTimeInterval);
 }
 
-// Meditation Timer Logic
-function setTimerMinutes(minutes, button) {
+// Timer
+function setTimer(mins, button) {
     if (timerActive) return;
-    
-    selectedMinutes = minutes;
-    timerSeconds = minutes * 60;
-    totalSeconds = minutes * 60;
+    selectedMinutes = mins;
+    timerSeconds = mins * 60;
+    totalSeconds = mins * 60;
     updateTimerDisplay();
+    updateProgressRing();
     
-    // Update active button
-    document.querySelectorAll('.timer-controls .btn-small').forEach(btn => {
-        btn.classList.remove('active');
-    });
+    document.querySelectorAll('.timer-option').forEach(b => b.classList.remove('active'));
     button.classList.add('active');
 }
 
-timer5.addEventListener('click', () => setTimerMinutes(5, timer5));
-timer10.addEventListener('click', () => setTimerMinutes(10, timer10));
-timer15.addEventListener('click', () => setTimerMinutes(15, timer15));
-timer20.addEventListener('click', () => setTimerMinutes(20, timer20));
+document.getElementById('timer5').addEventListener('click', function() { setTimer(5, this); });
+document.getElementById('timer10').addEventListener('click', function() { setTimer(10, this); });
+document.getElementById('timer15').addEventListener('click', function() { setTimer(15, this); });
+document.getElementById('timer20').addEventListener('click', function() { setTimer(20, this); });
 
-timerBtn.addEventListener('click', () => {
+document.getElementById('timerBtn').addEventListener('click', function() {
     if (!timerActive) {
         startTimer();
+        this.textContent = 'Pause';
     } else {
         stopTimer();
+        this.textContent = 'Start Meditation';
     }
 });
 
 function startTimer() {
     timerActive = true;
-    timerBtn.textContent = 'Pause';
-    
     timerInterval = setInterval(() => {
         timerSeconds--;
         updateTimerDisplay();
@@ -248,7 +227,8 @@ function startTimer() {
         
         if (timerSeconds <= 0) {
             stopTimer();
-            timerDisplay.textContent = 'Complete! 🙏';
+            document.getElementById('timerDisplay').textContent = 'Complete 🙏';
+            document.getElementById('timerBtn').textContent = 'Start Meditation';
             setTimeout(() => {
                 timerSeconds = selectedMinutes * 60;
                 totalSeconds = selectedMinutes * 60;
@@ -261,70 +241,61 @@ function startTimer() {
 
 function stopTimer() {
     timerActive = false;
-    timerBtn.textContent = 'Start Meditation';
     clearInterval(timerInterval);
 }
 
 function updateTimerDisplay() {
-    const minutes = Math.floor(timerSeconds / 60);
-    const seconds = timerSeconds % 60;
-    timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    const mins = Math.floor(timerSeconds / 60);
+    const secs = timerSeconds % 60;
+    document.getElementById('timerDisplay').textContent = 
+        `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
 }
 
 function updateProgressRing() {
-    const circumference = 2 * Math.PI * 54; // r=54
+    const circumference = 2 * Math.PI * 90;
     const progress = (totalSeconds - timerSeconds) / totalSeconds;
     const offset = circumference * (1 - progress);
-    progressCircle.style.strokeDashoffset = offset;
+    document.getElementById('progressCircle').style.strokeDashoffset = offset;
 }
 
-// Initialize progress ring
 updateProgressRing();
 
-// Mantra Counter Logic
-mantraBtn.addEventListener('click', () => {
+// Mantra Counter
+document.getElementById('mantraBtn').addEventListener('click', () => {
     mantraCounter++;
-    mantraCount.textContent = mantraCounter;
+    const countEl = document.getElementById('mantraCount');
+    countEl.textContent = mantraCounter;
+    countEl.style.transform = 'scale(1.1)';
+    setTimeout(() => countEl.style.transform = 'scale(1)', 150);
     
-    // Update mala progress (108 beads)
     const progress = Math.min((mantraCounter / 108) * 100, 100);
-    malaProgress.style.width = progress + '%';
+    document.getElementById('malaProgress').style.width = progress + '%';
+    document.getElementById('malaRemaining').textContent = Math.max(108 - mantraCounter, 0);
     
-    const remaining = Math.max(108 - mantraCounter, 0);
-    malaRemaining.textContent = remaining;
-    
-    // Add animation
-    mantraCount.style.transform = 'scale(1.15)';
-    setTimeout(() => {
-        mantraCount.style.transform = 'scale(1)';
-    }, 150);
-    
-    // Celebrate completion of 108
     if (mantraCounter === 108) {
-        setTimeout(() => {
-            alert('🎉 Congratulations! You completed a full mala of 108 mantras! 🙏');
-        }, 200);
+        setTimeout(() => alert('🎉 Mala complete! 108 mantras chanted 🙏'), 200);
     }
 });
 
-resetMantra.addEventListener('click', () => {
+document.getElementById('resetMantra').addEventListener('click', () => {
     mantraCounter = 0;
-    mantraCount.textContent = mantraCounter;
-    malaProgress.style.width = '0%';
-    malaRemaining.textContent = '108';
+    document.getElementById('mantraCount').textContent = '0';
+    document.getElementById('malaProgress').style.width = '0%';
+    document.getElementById('malaRemaining').textContent = '108';
 });
 
-// Quote Functions
-function displayRandomQuote() {
-    const randomIndex = Math.floor(Math.random() * quotes.length);
-    dailyQuote.textContent = quotes[randomIndex];
+// Quotes
+function showRandomQuote() {
+    const quote = quotes[Math.floor(Math.random() * quotes.length)];
+    document.getElementById('dailyQuote').textContent = quote;
 }
 
-newQuoteBtn.addEventListener('click', displayRandomQuote);
+document.getElementById('newQuote').addEventListener('click', showRandomQuote);
+showRandomQuote();
 
-// Service Worker Registration
+// Service Worker
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js')
-        .then(reg => console.log('Service Worker registered'))
-        .catch(err => console.log('Service Worker registration failed'));
+        .then(reg => console.log('SW registered'))
+        .catch(err => console.log('SW failed'));
 }
