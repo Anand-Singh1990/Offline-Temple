@@ -33,7 +33,7 @@ body {
 }
 
 .container {
-    max-width: 650px;
+    max-width: 700px;
     margin: 60px auto 0 auto;
     padding: 40px 20px;
 }
@@ -45,6 +45,156 @@ h1 {
     line-height: 1.4;
     color: #ffd700;
     text-align: center;
+}
+
+h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: #ffa500;
+    text-align: center;
+    font-weight: normal;
+}
+
+/* Feature Boxes */
+.feature-box {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 165, 0, 0.3);
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Breathing Section */
+.breathing-circle {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff6b35, #f7931e);
+    margin: 20px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+    box-shadow: 0 0 30px rgba(255, 107, 53, 0.3);
+}
+
+.breathing-circle.breathe-in {
+    animation: breatheIn 4s ease-in-out infinite;
+}
+
+.breathing-circle.breathe-out {
+    animation: breatheOut 4s ease-in-out infinite;
+}
+
+@keyframes breatheIn {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+}
+
+@keyframes breatheOut {
+    0%, 100% { transform: scale(1.3); }
+    50% { transform: scale(1); }
+}
+
+#breathingText {
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.breathing-controls, .timer-controls, .mantra-controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.breathing-counter {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 1.1rem;
+    color: #ffa500;
+}
+
+/* Buttons */
+.btn {
+    background: linear-gradient(135deg, #ff6b35, #f7931e);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    font-size: 1rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Georgia', serif;
+    box-shadow: 0 4px 10px rgba(255, 107, 53, 0.3);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255, 107, 53, 0.5);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn-small {
+    background: rgba(255, 165, 0, 0.2);
+    color: #ffa500;
+    border: 1px solid #ffa500;
+    padding: 8px 20px;
+    font-size: 0.9rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Georgia', serif;
+}
+
+.btn-small:hover {
+    background: rgba(255, 165, 0, 0.3);
+    transform: translateY(-1px);
+}
+
+/* Timer Section */
+.timer-display {
+    text-align: center;
+    margin: 20px 0;
+}
+
+#timerDisplay {
+    font-size: 3rem;
+    color: #ffd700;
+    font-weight: bold;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+}
+
+/* Mantra Section */
+.mantra-display {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.mantra-count {
+    font-size: 3.5rem;
+    color: #ffd700;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.mantra-text {
+    font-size: 1.5rem;
+    color: #ffa500;
+    font-style: italic;
+}
+
+/* Wisdom Content */
+.wisdom-content {
+    margin-top: 40px;
 }
 
 p {
@@ -95,44 +245,57 @@ strong {
         margin-top: 70px;
     }
     
-    .status-bar p {
-        font-size: 0.9rem;
+    .feature-box {
+        padding: 20px;
+    }
+    
+    .breathing-circle {
+        width: 150px;
+        height: 150px;
+    }
+    
+    #breathingText {
+        font-size: 1rem;
+    }
+    
+    #timerDisplay {
+        font-size: 2.5rem;
+    }
+    
+    .mantra-count {
+        font-size: 2.5rem;
+    }
+    
+    .mantra-text {
+        font-size: 1.2rem;
     }
     
     h1 {
         font-size: 1.5rem;
-        margin-bottom: 1.5rem;
+    }
+    
+    h3 {
+        font-size: 1.1rem;
     }
     
     p {
         font-size: 1rem;
-        margin-bottom: 1.2rem;
-    }
-    
-    .sanskrit {
-        font-size: 1.05rem;
-    }
-    
-    .translation {
-        font-size: 0.85rem;
     }
 }
 
 @media (max-width: 480px) {
-    h1 {
-        font-size: 1.3rem;
+    .breathing-circle {
+        width: 130px;
+        height: 130px;
     }
     
-    p {
-        font-size: 0.95rem;
+    .btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
     }
     
-    .sanskrit {
-        font-size: 1rem;
-    }
-    
-    .status-bar p {
+    .btn-small {
+        padding: 6px 15px;
         font-size: 0.85rem;
-        padding: 0 10px;
     }
 }

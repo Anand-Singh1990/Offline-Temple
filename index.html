@@ -17,66 +17,71 @@
     <div class="container" id="content" style="display: none;">
         <h1>🕉️ Shanti - A Sacred Pause</h1>
         
-        <p class="sanskrit">यदा यदा हि धर्मस्य ग्लानिर्भवति भारत।<br>
-        अभ्युत्थानमधर्मस्य तदात्मानं सृजाम्यहम्॥</p>
-        <p class="translation">"Whenever dharma declines and adharma rises, I manifest myself." - Bhagavad Gita 4.7</p>
+        <!-- Breathing Exercise -->
+        <div class="feature-box breathing-section">
+            <h3>🌬️ Pranayama - Breath Meditation</h3>
+            <div class="breathing-circle" id="breathingCircle">
+                <p id="breathingText">Click Start</p>
+            </div>
+            <div class="breathing-controls">
+                <button id="breathingBtn" class="btn">Start Pranayama</button>
+                <div class="breathing-counter">
+                    <span id="breathCount">0</span> breaths
+                </div>
+            </div>
+        </div>
 
-        <p>In this age of constant connectivity, we have forgotten the ancient wisdom of silence. The Vedas teach us that true knowledge comes not from endless consumption of information, but from turning inward - from the practice of <strong>pratyahara</strong>, the withdrawal of senses.</p>
+        <!-- Meditation Timer -->
+        <div class="feature-box timer-section">
+            <h3>⏱️ Dhyana - Meditation Timer</h3>
+            <div class="timer-display">
+                <div id="timerDisplay">05:00</div>
+            </div>
+            <div class="timer-controls">
+                <button id="timer5" class="btn-small">5 min</button>
+                <button id="timer10" class="btn-small">10 min</button>
+                <button id="timer15" class="btn-small">15 min</button>
+            </div>
+            <button id="timerBtn" class="btn">Start Meditation</button>
+        </div>
 
-        <p>When the mind is constantly fed with stimuli, it becomes like a turbulent ocean. But when we embrace stillness, when we disconnect from the external world, the waters become calm. In this calmness, we can see our true reflection - our <strong>Atman</strong>, the eternal self.</p>
+        <!-- Mantra Counter -->
+        <div class="feature-box mantra-section">
+            <h3>📿 Japa - Mantra Counter</h3>
+            <div class="mantra-display">
+                <div class="mantra-count" id="mantraCount">0</div>
+                <p class="mantra-text">ॐ Om Shanti</p>
+            </div>
+            <div class="mantra-controls">
+                <button id="mantraBtn" class="btn">Chant (+1)</button>
+                <button id="resetMantra" class="btn-small">Reset</button>
+            </div>
+        </div>
 
-        <p class="sanskrit">योगश्चित्तवृत्तिनिरोधः</p>
-        <p class="translation">"Yoga is the cessation of the fluctuations of the mind." - Patanjali's Yoga Sutras 1.2</p>
+        <!-- Wisdom Content -->
+        <div class="wisdom-content">
+            <p class="sanskrit">यदा यदा हि धर्मस्य ग्लानिर्भवति भारत।<br>
+            अभ्युत्थानमधर्मस्य तदात्मानं सृजाम्यहम्॥</p>
+            <p class="translation">"Whenever dharma declines and adharma rises, I manifest myself." - Bhagavad Gita 4.7</p>
 
-        <p>The great rishis sought enlightenment not in the noise of the world, but in the silence of forests and mountains. They understood that wisdom emerges from the gaps between thoughts, from the space that opens when we are not constantly distracted.</p>
+            <p>In this age of constant connectivity, we have forgotten the ancient wisdom of silence. The Vedas teach us that true knowledge comes not from endless consumption of information, but from turning inward - from the practice of <strong>pratyahara</strong>, the withdrawal of senses.</p>
 
-        <p>Being offline is not a limitation - it is <strong>vairagya</strong>, a conscious detachment from worldly entanglements. It is in these moments of digital tapasya that we can reconnect with something deeper, something eternal that exists beyond the realm of notifications and updates.</p>
+            <p>When the mind is constantly fed with stimuli, it becomes like a turbulent ocean. But when we embrace stillness, when we disconnect from the external world, the waters become calm. In this calmness, we can see our true reflection - our <strong>Atman</strong>, the eternal self.</p>
 
-        <p class="sanskrit">शान्तिः शान्तिः शान्तिः</p>
-        <p class="translation">"Peace, peace, peace." - Vedic blessing</p>
+            <p class="sanskrit">योगश्चित्तवृत्तिनिरोधः</p>
+            <p class="translation">"Yoga is the cessation of the fluctuations of the mind." - Patanjali's Yoga Sutras 1.2</p>
 
-        <p class="end-message">You have reached the end. May this moment of offline solitude bring you closer to your inner truth. Stay in this sacred silence as long as your soul desires.</p>
+            <p>The great rishis sought enlightenment not in the noise of the world, but in the silence of forests and mountains. They understood that wisdom emerges from the gaps between thoughts, from the space that opens when we are not constantly distracted.</p>
+
+            <p>Being offline is not a limitation - it is <strong>vairagya</strong>, a conscious detachment from worldly entanglements. It is in these moments of digital tapasya that we can reconnect with something deeper, something eternal that exists beyond the realm of notifications and updates.</p>
+
+            <p class="sanskrit">शान्तिः शान्तिः शान्तिः</p>
+            <p class="translation">"Peace, peace, peace." - Vedic blessing</p>
+
+            <p class="end-message">You have reached the end. May this moment of offline solitude bring you closer to your inner truth.</p>
+        </div>
     </div>
 
-    <script>
-        const statusBar = document.getElementById('statusBar');
-        const statusMessage = document.getElementById('statusMessage');
-        const content = document.getElementById('content');
-
-        function updateStatus() {
-            if (navigator.onLine) {
-                // User is online - show message to go offline
-                statusBar.style.display = 'block';
-                statusBar.style.backgroundColor = '#ff6b6b';
-                statusMessage.textContent = '🌐 Please turn on flight mode or disconnect from the internet to begin';
-                content.style.display = 'none';
-            } else {
-                // User is offline - show content
-                statusBar.style.display = 'block';
-                statusBar.style.backgroundColor = '#2d5016';
-                statusMessage.textContent = '✈️ You are offline - Welcome to your sanctuary';
-                content.style.display = 'block';
-                
-                // Hide status bar after 3 seconds
-                setTimeout(() => {
-                    statusBar.style.display = 'none';
-                }, 3000);
-            }
-        }
-
-        // Check status on load
-        window.addEventListener('load', updateStatus);
-
-        // Listen for online/offline changes
-        window.addEventListener('online', updateStatus);
-        window.addEventListener('offline', updateStatus);
-
-        // Register service worker
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js')
-                .then(reg => console.log('Service Worker registered'))
-                .catch(err => console.log('Service Worker registration failed'));
-        }
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
