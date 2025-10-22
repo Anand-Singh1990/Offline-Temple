@@ -1,277 +1,38 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="A sacred space for offline moments">
-    <meta name="theme-color" content="#1a1a2e">
-    <title>Sacred Offline Space</title>
+    <meta name="theme-color" content="#000000">
+    <meta name="description" content="A peaceful offline space">
+    <title>Offline Space</title>
     <link rel="manifest" href="manifest.json">
-    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            overflow: hidden;
-        }
-
-        .container {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-            padding: 2rem;
-        }
-
-        .screen {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-            max-width: 600px;
-            padding: 3rem;
-            text-align: center;
-            transition: opacity 1s ease-in-out;
-        }
-
-        .online-screen {
-            opacity: 1;
-            z-index: 2;
-        }
-
-        .offline-screen {
-            opacity: 0;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        body.offline .online-screen {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        body.offline .offline-screen {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 3rem 2rem;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-            color: #1a1a2e;
-        }
-
-        .emoji {
-            font-size: 4rem;
-            margin-bottom: 1.5rem;
-            display: block;
-        }
-
-        p {
-            font-size: 1.2rem;
-            line-height: 1.6;
-            color: #444;
-            margin-bottom: 1rem;
-        }
-
-        .pulse {
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.1);
-            }
-        }
-
-        .sacred-content {
-            margin-top: 2rem;
-        }
-
-        .quote {
-            font-style: italic;
-            font-size: 1.1rem;
-            color: #555;
-            margin: 1.5rem 0;
-            padding: 1rem;
-            border-left: 4px solid #667eea;
-            background: rgba(102, 126, 234, 0.1);
-            border-radius: 5px;
-        }
-
-        .breath-circle {
-            width: 150px;
-            height: 150px;
-            margin: 2rem auto;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            animation: breathe 4s ease-in-out infinite;
-        }
-
-        @keyframes breathe {
-            0%, 100% {
-                transform: scale(1);
-                opacity: 0.7;
-            }
-            50% {
-                transform: scale(1.3);
-                opacity: 1;
-            }
-        }
-
-        .status-indicator {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.9);
-            font-size: 0.9rem;
-            font-weight: 600;
-            z-index: 1000;
-        }
-
-        .status-online {
-            color: #e74c3c;
-        }
-
-        .status-offline {
-            color: #27ae60;
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
-            }
-
-            .emoji {
-                font-size: 3rem;
-            }
-
-            p {
-                font-size: 1rem;
-            }
-
-            .card {
-                padding: 2rem 1.5rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="status-indicator">
-        <span class="status-text">Checking...</span>
-    </div>
-
     <div class="container">
-        <!-- Online Screen -->
-        <div class="screen online-screen">
-            <div class="card">
-                <span class="emoji pulse">🌐</span>
-                <h1>You're Still Connected</h1>
-                <p>This is a sacred space designed for offline moments.</p>
-                <p>To enter, please:</p>
-                <p><strong>Turn on Airplane Mode</strong><br>or<br><strong>Disconnect from the internet</strong></p>
-                <p style="margin-top: 2rem; font-size: 0.9rem; color: #888;">
-                    The content will appear automatically when you go offline.
-                </p>
-            </div>
-        </div>
+        <h1>Welcome to Your Offline Space</h1>
+        
+        <p>In a world where every second must be filled with entertainment, information, and stimulation, we have forgotten how to be bored. But boredom is not an enemy – it is a friend we have ignored for too long.</p>
 
-        <!-- Offline Screen -->
-        <div class="screen offline-screen">
-            <div class="card">
-                <span class="emoji">🕉️</span>
-                <h1>Welcome to Your Sacred Space</h1>
-                <p>You've entered a place beyond the noise of constant connectivity.</p>
+        <p>When you're offline, when the constant stream of messages, updates, and notifications stops, space is created. Space for your thoughts to wander, for your mind to rest, for new ideas to germinate.</p>
 
-                <div class="breath-circle"></div>
+        <p>The greatest inventions, the most beautiful artworks, the deepest insights – they were not born from constant stimulation, but from moments of silence. From moments where you had nothing else to do but to be.</p>
 
-                <div class="sacred-content">
-                    <p>Take a moment to breathe deeply.</p>
-                    <p>This space exists only for you, in this moment.</p>
+        <p>Boredom is the breeding ground of creativity. It is in those empty moments that your brain forms new connections, that old memories mix with new experiences, that the most unexpected insights emerge.</p>
 
-                    <div class="quote">
-                        "In stillness, we find ourselves.<br>
-                        In silence, we hear our truth.<br>
-                        In disconnection, we reconnect."
-                    </div>
+        <p>So don't be afraid of silence. Embrace boredom. Let your thoughts roam freely. In this digital world, being offline is not a shortcoming – it is a superpower we have forgotten to use.</p>
 
-                    <p style="margin-top: 2rem; font-size: 0.95rem;">
-                        🌙 Meditate<br>
-                        📖 Read<br>
-                        ✍️ Journal<br>
-                        🧘 Simply Be
-                    </p>
-                </div>
-            </div>
-        </div>
+        <p class="end-message">You made it to the end. Hopefully it felt good to be offline. You are welcome to stay in the quiet a little longer.</p>
     </div>
 
     <script>
-        // Register Service Worker
+        // Register service worker
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js')
-                    .then(registration => {
-                        console.log('ServiceWorker registered:', registration);
-                    })
-                    .catch(err => {
-                        console.log('ServiceWorker registration failed:', err);
-                    });
-            });
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('Service Worker registered'))
+                .catch(err => console.log('Service Worker registration failed'));
         }
-
-        // Connection status detection
-        function updateConnectionStatus() {
-            const isOnline = navigator.onLine;
-            const statusIndicator = document.querySelector('.status-indicator');
-            const statusText = document.querySelector('.status-text');
-
-            if (isOnline) {
-                document.body.classList.remove('offline');
-                statusIndicator.classList.remove('status-offline');
-                statusIndicator.classList.add('status-online');
-                statusText.textContent = '🌐 Online';
-            } else {
-                document.body.classList.add('offline');
-                statusIndicator.classList.remove('status-online');
-                statusIndicator.classList.add('status-offline');
-                statusText.textContent = '✨ Offline';
-            }
-        }
-
-        // Initial check
-        updateConnectionStatus();
-
-        // Listen for connection changes
-        window.addEventListener('online', updateConnectionStatus);
-        window.addEventListener('offline', updateConnectionStatus);
-
-        // Periodic check (as backup)
-        setInterval(updateConnectionStatus, 1000);
     </script>
 </body>
 </html>
