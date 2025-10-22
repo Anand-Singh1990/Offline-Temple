@@ -6,22 +6,69 @@ const progressFill = document.getElementById('progressFill');
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* ==================== ONLINE/OFFLINE STATUS ==================== */
-function updateStatus() {
-    if (navigator.onLine) {
+/* ==================== ONLINE/OFFLINE STATUS - RELIABLE CHECK ==================== */
+function checkConnectivity() {
+    // Multiple checks for reliability
+    const isOnline = navigator.onLine;
+    
+    // Also check via fetch as backup (more reliable)
+    fetch('https://www.google.com/favicon.ico', { 
+        mode: 'no-cors',
+        cache: 'no-cache'
+    })
+    .then(() => {
+        // Online - show landing page
+        updateStatus(false);
+    })
+    .catch(() => {
+        // Offline - show main app
+        updateStatus(true);
+    });
+    
+    // Use navigator.onLine as immediate feedback
+    updateStatus(!isOnline);
+}
+
+function updateStatus(isOnline) {
+    if (!isOnline) {
+        // Online: Show landing page
         offlinePrompt.style.display = 'flex';
         mainContent.style.display = 'none';
         progressIndicator.classList.remove('visible');
     } else {
+        // Offline: Show main app
         offlinePrompt.style.display = 'none';
         mainContent.style.display = 'block';
-        setTimeout(initAnimations, 100);
+        setTimeout(() => {
+            if (!animationsInitialized) {
+                initAnimations();
+            }
+        }, 100);
     }
 }
 
-window.addEventListener('load', updateStatus);
-window.addEventListener('online', updateStatus);
-window.addEventListener('offline', updateStatus);
+// Listen for connectivity changes
+window.addEventListener('online', () => {
+    console.log('Network: Online');
+    updateStatus(false);
+});
+
+window.addEventListener('offline', () => {
+    console.log('Network: Offline');
+    updateStatus(true);
+});
+
+// Check on load with delay to ensure accurate reading
+window.addEventListener('load', () => {
+    // Immediate check
+    checkConnectivity();
+    
+    // Double-check after 500ms for accuracy
+    setTimeout(checkConnectivity, 500);
+});
+
+// Run immediate check when script loads
+checkConnectivity();
 
 /* ==================== TEXT SCRAMBLE EFFECT ==================== */
 class TextScramble {
@@ -87,10 +134,13 @@ class TextScramble {
     }
 }
 
-
-
 /* ==================== ANIMATIONS INITIALIZATION ==================== */
+let animationsInitialized = false;
+
 function initAnimations() {
+    if (animationsInitialized) return;
+    animationsInitialized = true;
+    
     // Hero animations
     gsap.from('.om-huge', { 
         opacity: 0, 
@@ -100,8 +150,10 @@ function initAnimations() {
     });
     
     const heroTitle = document.querySelector('.hero-h1');
-    const heroScramble = new TextScramble(heroTitle);
-    setTimeout(() => heroScramble.setText('Shanti'), 800);
+    if (heroTitle) {
+        const heroScramble = new TextScramble(heroTitle);
+        setTimeout(() => heroScramble.setText('Shanti'), 800);
+    }
     
     gsap.from('.hero-p', { 
         opacity: 0, 
@@ -250,26 +302,17 @@ function playSound(type, button) {
     const volume = document.getElementById('volumeSlider').value / 100;
     
     if (type === 'om') {
-        // Om sound - 136.1 Hz (OM frequency)
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
-        
         osc.connect(gain);
         gain.connect(ctx.destination);
-        
         osc.frequency.value = 136.1;
         osc.type = 'sine';
         gain.gain.value = volume;
-        
         osc.start();
-        currentAudio = { 
-            stop: () => osc.stop(), 
-            audioContext: ctx, 
-            gainNode: gain 
-        };
+        currentAudio = { stop: () => osc.stop(), audioContext: ctx, gainNode: gain };
         
     } else if (type === 'bell') {
-        // Bell sound - Multiple harmonic frequencies
         const freqs = [200, 400, 800, 1200, 1600];
         const gains = [1.0, 0.5, 0.3, 0.2, 0.1];
         const masterGain = ctx.createGain();
@@ -280,15 +323,10 @@ function playSound(type, button) {
             freqs.forEach((freq, i) => {
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
-                
                 osc.frequency.value = freq;
                 osc.type = 'sine';
-                gain.gain.setValueAtTime(
-                    gains[i] * (document.getElementById('volumeSlider').value / 100) * 0.3, 
-                    ctx.currentTime
-                );
+                gain.gain.setValueAtTime(gains[i] * (document.getElementById('volumeSlider').value / 100) * 0.3, ctx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 3);
-                
                 osc.connect(gain);
                 gain.connect(ctx.destination);
                 osc.start();
@@ -296,7 +334,7 @@ function playSound(type, button) {
             });
         };
         
-        playBell(); // First ring
+        playBell();
         const interval = setInterval(() => {
             if (!currentAudio) {
                 clearInterval(interval);
@@ -305,14 +343,9 @@ function playSound(type, button) {
             playBell();
         }, 3500);
         
-        currentAudio = { 
-            stop: () => clearInterval(interval),
-            audioContext: ctx,
-            gainNode: masterGain
-        };
+        currentAudio = { stop: () => clearInterval(interval), audioContext: ctx, gainNode: masterGain };
         
     } else if (type === 'rain') {
-        // Rain sound - White noise with bandpass filter
         const bufferSize = 2 * ctx.sampleRate;
         const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
         const output = noiseBuffer.getChannelData(0);
@@ -338,11 +371,7 @@ function playSound(type, button) {
         gain.connect(ctx.destination);
         whiteNoise.start();
         
-        currentAudio = { 
-            stop: () => whiteNoise.stop(),
-            audioContext: ctx,
-            gainNode: gain
-        };
+        currentAudio = { stop: () => whiteNoise.stop(), audioContext: ctx, gainNode: gain };
     }
     
     button.classList.add('active');
@@ -397,7 +426,6 @@ function breatheCycle() {
     
     if (!breathingActive) return;
     
-    // Inhale phase
     text.textContent = 'Inhale';
     orb.classList.add('in');
     orb.classList.remove('out');
@@ -408,7 +436,6 @@ function breatheCycle() {
         
         setTimeout(() => {
             if (!breathingActive) return;
-            // Exhale phase
             text.textContent = 'Exhale';
             orb.classList.add('out');
             orb.classList.remove('in');
@@ -421,7 +448,7 @@ function breatheCycle() {
                     if (!breathingActive) return;
                     breathCounter++;
                     document.getElementById('breathCount').textContent = breathCounter;
-                    breatheCycle(); // Continue cycle
+                    breatheCycle();
                 }, 4000);
             }, 4000);
         }, 4000);
@@ -444,13 +471,11 @@ let totalSeconds = 300;
 
 function setTimer(mins, btn) {
     if (timerActive) return;
-    
     selectedMinutes = mins;
     timerSeconds = mins * 60;
     totalSeconds = mins * 60;
     updateTimerDisplay();
     updateTimerProgress();
-    
     document.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
 }
@@ -483,8 +508,6 @@ function startTimer() {
             const scrambler = new TextScramble(display);
             scrambler.setText('Done 🙏');
             document.getElementById('timerBtn').textContent = 'Start';
-            
-            // Reset after 3 seconds
             setTimeout(() => {
                 timerSeconds = selectedMinutes * 60;
                 totalSeconds = selectedMinutes * 60;
@@ -514,7 +537,6 @@ function updateTimerProgress() {
     document.getElementById('timerProgress').style.strokeDashoffset = off;
 }
 
-// Initialize timer progress
 updateTimerProgress();
 
 /* ==================== MANTRA COUNTER ==================== */
@@ -522,7 +544,6 @@ let mantraCounter = 0;
 
 document.getElementById('mantraBtn').addEventListener('click', () => {
     mantraCounter++;
-    
     const mantraNum = document.getElementById('mantraCount');
     const scrambler = new TextScramble(mantraNum);
     scrambler.setText(mantraCounter.toString());
@@ -531,7 +552,6 @@ document.getElementById('mantraBtn').addEventListener('click', () => {
     document.getElementById('malaProgress').style.width = prog + '%';
     document.getElementById('malaRemaining').textContent = Math.max(108 - mantraCounter, 0);
     
-    // Completion celebration
     if (mantraCounter === 108) {
         setTimeout(() => {
             const mantraTxt = document.querySelector('.mantra-txt');
@@ -544,15 +564,11 @@ document.getElementById('mantraBtn').addEventListener('click', () => {
 
 document.getElementById('resetMantra').addEventListener('click', () => {
     mantraCounter = 0;
-    
     const mantraNum = document.getElementById('mantraCount');
     const scrambler = new TextScramble(mantraNum);
     scrambler.setText('0');
-    
     document.getElementById('malaProgress').style.width = '0%';
     document.getElementById('malaRemaining').textContent = '108';
-    
-    // Reset text
     const mantraTxt = document.querySelector('.mantra-txt');
     const txtScrambler = new TextScramble(mantraTxt);
     txtScrambler.setText('Om Shanti');
@@ -572,7 +588,6 @@ const quotes = [
     "Meditation is not evasion; it is a serene encounter with reality."
 ];
 
-// Initialize with first quote (already set in HTML)
 document.getElementById('newQuote').addEventListener('click', () => {
     const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
     const quoteEl = document.getElementById('dailyQuote');
@@ -584,17 +599,12 @@ document.getElementById('newQuote').addEventListener('click', () => {
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('sw.js')
-            .then(registration => {
-                console.log('Service Worker registered successfully:', registration.scope);
-            })
-            .catch(error => {
-                console.log('Service Worker registration failed:', error);
-            });
+            .then(registration => console.log('Service Worker registered:', registration.scope))
+            .catch(error => console.log('Service Worker registration failed:', error));
     });
 }
 
 /* ==================== PERFORMANCE OPTIMIZATION ==================== */
-// Prevent scroll jank
 let ticking = false;
 mainContent.addEventListener('scroll', () => {
     if (!ticking) {
@@ -605,16 +615,11 @@ mainContent.addEventListener('scroll', () => {
     }
 });
 
-// Cleanup on page unload
 window.addEventListener('beforeunload', () => {
     if (currentAudio) {
         if (currentAudio.stop) currentAudio.stop();
         if (currentAudio.audioContext) currentAudio.audioContext.close();
     }
-    if (breathingActive) {
-        stopBreathing();
-    }
-    if (timerActive) {
-        stopTimer();
-    }
+    if (breathingActive) stopBreathing();
+    if (timerActive) stopTimer();
 });
