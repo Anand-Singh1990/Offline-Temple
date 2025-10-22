@@ -40,7 +40,7 @@ body {
 
 h1 {
     font-size: 2rem;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
     font-weight: normal;
     line-height: 1.4;
     color: #ffd700;
@@ -49,10 +49,18 @@ h1 {
 
 h3 {
     font-size: 1.3rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     color: #ffa500;
     text-align: center;
     font-weight: normal;
+}
+
+.feature-desc {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #d4a574;
+    margin-bottom: 1.5rem;
+    font-style: italic;
 }
 
 /* Feature Boxes */
@@ -60,64 +68,120 @@ h3 {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 165, 0, 0.3);
     border-radius: 15px;
-    padding: 30px;
+    padding: 30px 25px;
     margin-bottom: 30px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
-/* Breathing Section */
-.breathing-circle {
-    width: 180px;
-    height: 180px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #ff6b35, #f7931e);
-    margin: 20px auto;
+/* Sound Section */
+.sound-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.sound-btn {
+    background: rgba(255, 165, 0, 0.2);
+    color: #ffa500;
+    border: 1px solid rgba(255, 165, 0, 0.5);
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Georgia', serif;
+}
+
+.sound-btn:hover, .sound-btn.active {
+    background: rgba(255, 165, 0, 0.4);
+    transform: translateY(-2px);
+}
+
+.sound-btn-stop {
+    background: rgba(255, 107, 53, 0.3);
+    color: #ff6b35;
+    border: 1px solid #ff6b35;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Georgia', serif;
+}
+
+.volume-control {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.3s ease;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.volume-control input[type="range"] {
+    width: 150px;
+    cursor: pointer;
+}
+
+/* Breathing Section */
+.breathing-circle {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff6b35, #f7931e);
+    margin: 20px auto 30px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 4s ease-in-out;
     box-shadow: 0 0 30px rgba(255, 107, 53, 0.3);
 }
 
 .breathing-circle.breathe-in {
-    animation: breatheIn 4s ease-in-out infinite;
+    transform: scale(1.3);
 }
 
 .breathing-circle.breathe-out {
-    animation: breatheOut 4s ease-in-out infinite;
-}
-
-@keyframes breatheIn {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.3); }
-}
-
-@keyframes breatheOut {
-    0%, 100% { transform: scale(1.3); }
-    50% { transform: scale(1); }
+    transform: scale(1);
 }
 
 #breathingText {
     color: white;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     font-weight: bold;
     text-align: center;
+    margin: 0;
 }
 
-.breathing-controls, .timer-controls, .mantra-controls {
+.breathing-controls {
     display: flex;
     justify-content: center;
-    gap: 15px;
-    flex-wrap: wrap;
-    margin-top: 15px;
+    margin-bottom: 20px;
 }
 
-.breathing-counter {
-    width: 100%;
+.breathing-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.stat-item {
     text-align: center;
-    margin-top: 10px;
-    font-size: 1.1rem;
-    color: #ffa500;
+}
+
+.stat-value {
+    display: block;
+    font-size: 1.8rem;
+    color: #ffd700;
+    font-weight: bold;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.9rem;
+    color: #d4a574;
+    margin-top: 5px;
 }
 
 /* Buttons */
@@ -125,13 +189,14 @@ h3 {
     background: linear-gradient(135deg, #ff6b35, #f7931e);
     color: white;
     border: none;
-    padding: 12px 30px;
+    padding: 14px 35px;
     font-size: 1rem;
     border-radius: 25px;
     cursor: pointer;
     transition: all 0.3s ease;
     font-family: 'Georgia', serif;
     box-shadow: 0 4px 10px rgba(255, 107, 53, 0.3);
+    display: inline-block;
 }
 
 .btn:hover {
@@ -146,8 +211,8 @@ h3 {
 .btn-small {
     background: rgba(255, 165, 0, 0.2);
     color: #ffa500;
-    border: 1px solid #ffa500;
-    padding: 8px 20px;
+    border: 1px solid rgba(255, 165, 0, 0.5);
+    padding: 8px 18px;
     font-size: 0.9rem;
     border-radius: 20px;
     cursor: pointer;
@@ -160,10 +225,20 @@ h3 {
     transform: translateY(-1px);
 }
 
+.btn-small.active {
+    background: rgba(255, 165, 0, 0.4);
+    border-color: #ffd700;
+    color: #ffd700;
+}
+
 /* Timer Section */
 .timer-display {
     text-align: center;
     margin: 20px 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #timerDisplay {
@@ -171,6 +246,23 @@ h3 {
     color: #ffd700;
     font-weight: bold;
     text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    margin-bottom: 15px;
+}
+
+.progress-ring {
+    margin-top: 10px;
+}
+
+.timer-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+}
+
+.timer-section .btn {
+    margin-top: 10px;
 }
 
 /* Mantra Section */
@@ -180,16 +272,64 @@ h3 {
 }
 
 .mantra-count {
-    font-size: 3.5rem;
+    font-size: 4rem;
     color: #ffd700;
     font-weight: bold;
     margin-bottom: 10px;
+    transition: transform 0.2s ease;
 }
 
 .mantra-text {
     font-size: 1.5rem;
     color: #ffa500;
     font-style: italic;
+    margin: 15px 0;
+}
+
+.mala-progress {
+    width: 100%;
+    max-width: 300px;
+    height: 8px;
+    background: rgba(255, 165, 0, 0.2);
+    border-radius: 10px;
+    margin: 20px auto;
+    overflow: hidden;
+}
+
+.mala-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #ff6b35, #ffd700);
+    width: 0%;
+    transition: width 0.3s ease;
+    border-radius: 10px;
+}
+
+.mala-info {
+    font-size: 0.95rem;
+    color: #d4a574;
+    font-style: italic;
+}
+
+.mantra-controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+/* Quote Section */
+.quote-section {
+    text-align: center;
+}
+
+.daily-quote {
+    font-size: 1.15rem;
+    color: #f4e4c1;
+    font-style: italic;
+    margin: 20px 0;
+    line-height: 1.8;
+    min-height: 60px;
 }
 
 /* Wisdom Content */
@@ -246,16 +386,16 @@ strong {
     }
     
     .feature-box {
-        padding: 20px;
+        padding: 25px 20px;
     }
     
     .breathing-circle {
-        width: 150px;
-        height: 150px;
+        width: 160px;
+        height: 160px;
     }
     
     #breathingText {
-        font-size: 1rem;
+        font-size: 1.1rem;
     }
     
     #timerDisplay {
@@ -263,7 +403,7 @@ strong {
     }
     
     .mantra-count {
-        font-size: 2.5rem;
+        font-size: 3rem;
     }
     
     .mantra-text {
@@ -281,21 +421,38 @@ strong {
     p {
         font-size: 1rem;
     }
+    
+    .stat-value {
+        font-size: 1.5rem;
+    }
 }
 
 @media (max-width: 480px) {
     .breathing-circle {
-        width: 130px;
-        height: 130px;
+        width: 140px;
+        height: 140px;
     }
     
     .btn {
-        padding: 10px 20px;
-        font-size: 0.9rem;
+        padding: 12px 25px;
+        font-size: 0.95rem;
     }
     
     .btn-small {
-        padding: 6px 15px;
+        padding: 7px 14px;
         font-size: 0.85rem;
+    }
+    
+    .sound-btn {
+        padding: 8px 15px;
+        font-size: 0.85rem;
+    }
+    
+    #timerDisplay {
+        font-size: 2rem;
+    }
+    
+    .mantra-count {
+        font-size: 2.5rem;
     }
 }

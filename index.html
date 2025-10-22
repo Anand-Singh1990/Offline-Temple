@@ -17,16 +17,39 @@
     <div class="container" id="content" style="display: none;">
         <h1>🕉️ Shanti - A Sacred Pause</h1>
         
+        <!-- Ambient Sound Toggle -->
+        <div class="feature-box sound-section">
+            <h3>🎵 Ambient Sounds</h3>
+            <div class="sound-controls">
+                <button id="omSound" class="sound-btn">Om Chanting</button>
+                <button id="bellSound" class="sound-btn">Temple Bell</button>
+                <button id="rainSound" class="sound-btn">Rain</button>
+                <button id="stopSound" class="sound-btn-stop" style="display: none;">Stop Sound</button>
+            </div>
+            <div class="volume-control">
+                <span>Volume:</span>
+                <input type="range" id="volumeSlider" min="0" max="100" value="50">
+            </div>
+        </div>
+
         <!-- Breathing Exercise -->
         <div class="feature-box breathing-section">
-            <h3>🌬️ Pranayama - Breath Meditation </h3>
+            <h3>🌬️ Pranayama - Breath Meditation</h3>
+            <p class="feature-desc">Follow the circle's rhythm: Inhale as it grows, exhale as it shrinks</p>
             <div class="breathing-circle" id="breathingCircle">
                 <p id="breathingText">Click Start</p>
             </div>
             <div class="breathing-controls">
                 <button id="breathingBtn" class="btn">Start Pranayama</button>
-                <div class="breathing-counter">
-                    <span id="breathCount">0</span> breaths
+            </div>
+            <div class="breathing-stats">
+                <div class="stat-item">
+                    <span class="stat-value" id="breathCount">0</span>
+                    <span class="stat-label">Breaths</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="breathTime">00:00</span>
+                    <span class="stat-label">Duration</span>
                 </div>
             </div>
         </div>
@@ -34,13 +57,23 @@
         <!-- Meditation Timer -->
         <div class="feature-box timer-section">
             <h3>⏱️ Dhyana - Meditation Timer</h3>
+            <p class="feature-desc">Set your meditation duration and find inner peace</p>
             <div class="timer-display">
                 <div id="timerDisplay">05:00</div>
+                <div class="progress-ring" id="progressRing">
+                    <svg width="120" height="120">
+                        <circle cx="60" cy="60" r="54" stroke="#ffa500" stroke-width="4" fill="none" opacity="0.2"/>
+                        <circle id="progressCircle" cx="60" cy="60" r="54" stroke="#ffd700" stroke-width="4" fill="none" 
+                                stroke-dasharray="339.292" stroke-dashoffset="0" 
+                                style="transform: rotate(-90deg); transform-origin: center; transition: stroke-dashoffset 1s linear;"/>
+                    </svg>
+                </div>
             </div>
             <div class="timer-controls">
-                <button id="timer5" class="btn-small">5 min</button>
+                <button id="timer5" class="btn-small active">5 min</button>
                 <button id="timer10" class="btn-small">10 min</button>
                 <button id="timer15" class="btn-small">15 min</button>
+                <button id="timer20" class="btn-small">20 min</button>
             </div>
             <button id="timerBtn" class="btn">Start Meditation</button>
         </div>
@@ -48,14 +81,28 @@
         <!-- Mantra Counter -->
         <div class="feature-box mantra-section">
             <h3>📿 Japa - Mantra Counter</h3>
+            <p class="feature-desc">Digital mala beads for counting your mantras (108 is sacred)</p>
             <div class="mantra-display">
                 <div class="mantra-count" id="mantraCount">0</div>
                 <p class="mantra-text">ॐ Om Shanti</p>
+                <div class="mala-progress">
+                    <div class="mala-progress-bar" id="malaProgress"></div>
+                </div>
+                <p class="mala-info">
+                    <span id="malaRemaining">108</span> remaining to complete mala
+                </p>
             </div>
             <div class="mantra-controls">
                 <button id="mantraBtn" class="btn">Chant (+1)</button>
                 <button id="resetMantra" class="btn-small">Reset</button>
             </div>
+        </div>
+
+        <!-- Daily Quote -->
+        <div class="feature-box quote-section">
+            <h3>💭 Daily Wisdom</h3>
+            <p class="daily-quote" id="dailyQuote"></p>
+            <button id="newQuote" class="btn-small">New Quote</button>
         </div>
 
         <!-- Wisdom Content -->
