@@ -3,30 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#000000">
-    <meta name="description" content="A peaceful offline space">
-    <title>Offline Space</title>
+    <meta name="theme-color" content="#1a0a00">
+    <meta name="description" content="A peaceful offline space for reflection">
+    <title>Shanti - Offline Sanctuary</title>
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to Your Offline Space</h1>
+    <div class="status-bar" id="statusBar">
+        <p id="statusMessage">Please turn on flight mode or disconnect from the internet</p>
+    </div>
+
+    <div class="container" id="content" style="display: none;">
+        <h1>🕉️ Shanti - A Sacred Pause</h1>
         
-        <p>In a world where every second must be filled with entertainment, information, and stimulation, we have forgotten how to be bored. But boredom is not an enemy – it is a friend we have ignored for too long.</p>
+        <p class="sanskrit">यदा यदा हि धर्मस्य ग्लानिर्भवति भारत।<br>
+        अभ्युत्थानमधर्मस्य तदात्मानं सृजाम्यहम्॥</p>
+        <p class="translation">"Whenever dharma declines and adharma rises, I manifest myself." - Bhagavad Gita 4.7</p>
 
-        <p>When you're offline, when the constant stream of messages, updates, and notifications stops, space is created. Space for your thoughts to wander, for your mind to rest, for new ideas to germinate.</p>
+        <p>In this age of constant connectivity, we have forgotten the ancient wisdom of silence. The Vedas teach us that true knowledge comes not from endless consumption of information, but from turning inward - from the practice of <strong>pratyahara</strong>, the withdrawal of senses.</p>
 
-        <p>The greatest inventions, the most beautiful artworks, the deepest insights – they were not born from constant stimulation, but from moments of silence. From moments where you had nothing else to do but to be.</p>
+        <p>When the mind is constantly fed with stimuli, it becomes like a turbulent ocean. But when we embrace stillness, when we disconnect from the external world, the waters become calm. In this calmness, we can see our true reflection - our <strong>Atman</strong>, the eternal self.</p>
 
-        <p>Boredom is the breeding ground of creativity. It is in those empty moments that your brain forms new connections, that old memories mix with new experiences, that the most unexpected insights emerge.</p>
+        <p class="sanskrit">योगश्चित्तवृत्तिनिरोधः</p>
+        <p class="translation">"Yoga is the cessation of the fluctuations of the mind." - Patanjali's Yoga Sutras 1.2</p>
 
-        <p>So don't be afraid of silence. Embrace boredom. Let your thoughts roam freely. In this digital world, being offline is not a shortcoming – it is a superpower we have forgotten to use.</p>
+        <p>The great rishis sought enlightenment not in the noise of the world, but in the silence of forests and mountains. They understood that wisdom emerges from the gaps between thoughts, from the space that opens when we are not constantly distracted.</p>
 
-        <p class="end-message">You made it to the end. Hopefully it felt good to be offline. You are welcome to stay in the quiet a little longer.</p>
+        <p>Being offline is not a limitation - it is <strong>vairagya</strong>, a conscious detachment from worldly entanglements. It is in these moments of digital tapasya that we can reconnect with something deeper, something eternal that exists beyond the realm of notifications and updates.</p>
+
+        <p class="sanskrit">शान्तिः शान्तिः शान्तिः</p>
+        <p class="translation">"Peace, peace, peace." - Vedic blessing</p>
+
+        <p class="end-message">You have reached the end. May this moment of offline solitude bring you closer to your inner truth. Stay in this sacred silence as long as your soul desires.</p>
     </div>
 
     <script>
+        const statusBar = document.getElementById('statusBar');
+        const statusMessage = document.getElementById('statusMessage');
+        const content = document.getElementById('content');
+
+        function updateStatus() {
+            if (navigator.onLine) {
+                // User is online - show message to go offline
+                statusBar.style.display = 'block';
+                statusBar.style.backgroundColor = '#ff6b6b';
+                statusMessage.textContent = '🌐 Please turn on flight mode or disconnect from the internet to begin';
+                content.style.display = 'none';
+            } else {
+                // User is offline - show content
+                statusBar.style.display = 'block';
+                statusBar.style.backgroundColor = '#2d5016';
+                statusMessage.textContent = '✈️ You are offline - Welcome to your sanctuary';
+                content.style.display = 'block';
+                
+                // Hide status bar after 3 seconds
+                setTimeout(() => {
+                    statusBar.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        // Check status on load
+        window.addEventListener('load', updateStatus);
+
+        // Listen for online/offline changes
+        window.addEventListener('online', updateStatus);
+        window.addEventListener('offline', updateStatus);
+
         // Register service worker
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js')
