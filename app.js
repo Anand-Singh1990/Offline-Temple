@@ -1,24 +1,8 @@
 const offlinePrompt = document.getElementById('offlinePrompt');
 const mainContent = document.getElementById('mainContent');
 
-// Intersection Observer for scroll animations
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -100px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-        }
-    });
-}, observerOptions);
-
-// Observe all fade-in sections
-document.querySelectorAll('.fade-in-section').forEach(section => {
-    observer.observe(section);
-});
+// Register GSAP plugins
+gsap.registerPlugin(ScrollTrigger);
 
 // Online/Offline Status
 function updateStatus() {
@@ -28,13 +12,7 @@ function updateStatus() {
     } else {
         offlinePrompt.style.display = 'none';
         mainContent.style.display = 'block';
-        
-        // Re-observe sections when going offline
-        setTimeout(() => {
-            document.querySelectorAll('.fade-in-section').forEach(section => {
-                observer.observe(section);
-            });
-        }, 100);
+        setTimeout(initAnimations, 100);
     }
 }
 
@@ -42,40 +20,80 @@ window.addEventListener('load', updateStatus);
 window.addEventListener('online', updateStatus);
 window.addEventListener('offline', updateStatus);
 
-// Sound Variables
+// GSAP Animations
+function initAnimations() {
+    // Fade in main content
+    gsap.to(mainContent, {
+        opacity: 1,
+        duration: 1,
+        ease: 'power2.out'
+    });
+    
+    // Hero animations
+    const heroTl = gsap.timeline();
+    heroTl
+        .to('.om-large', { opacity: 0.15, scale: 1, duration: 1.5, ease: 'power3.out' })
+        .to('.hero-title', { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }, '-=1')
+        .to('.hero-subtitle', { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }, '-=0.7');
+    
+    // Pinned intro with fade
+    gsap.timeline({
+        scrollTrigger: {
+            trigger: '.pinned-intro',
+            start: 'top top',
+            end: '+=100%',
+            pin: true,
+            scrub: 1
+        }
+    })
+    .to('.intro-content', { opacity: 1, scale: 1, duration: 0.5 })
+    .to('.intro-content', { opacity: 0, scale: 0.9, duration: 0.5 }, '+=0.3');
+    
+    // Feature cards - scale and fade in
+    gsap.utils.toArray('.feature-card').forEach((card, index) => {
+        gsap.to(card, {
+            scrollTrigger: {
+                trigger: card,
+                start: 'top 80%',
+                end: 'top 20%',
+                scrub: 1
+            },
+            opacity: 1,
+            scale: 1,
+            ease: 'power2.out'
+        });
+    });
+    
+    // Philosophy pins with crossfade
+    gsap.utils.toArray('.philosophy-pin').forEach((pin, index) => {
+        const card = pin.querySelector('.verse-card');
+        
+        gsap.timeline({
+            scrollTrigger: {
+                trigger: pin,
+                start: 'top top',
+                end: '+=100%',
+                pin: true,
+                scrub: 1
+            }
+        })
+        .to(card, { opacity: 1, scale: 1, duration: 0.3 })
+        .to(card, { opacity: 0, scale: 0.95, duration: 0.3 }, '+=0.4');
+    });
+}
+
+// Volume slider fill
+document.getElementById('volumeSlider').addEventListener('input', (e) => {
+    document.getElementById('sliderFill').style.width = e.target.value + '%';
+    if (currentAudio && currentAudio.gainNode) {
+        currentAudio.gainNode.gain.value = e.target.value / 100;
+    }
+});
+
+// Sound system
 let currentAudio = null;
 let currentSoundBtn = null;
 
-// Breathing Variables
-let breathingActive = false;
-let breathCounter = 0;
-let breathTimeSeconds = 0;
-let breathTimeInterval;
-
-// Timer Variables
-let timerActive = false;
-let timerInterval;
-let timerSeconds = 300;
-let selectedMinutes = 5;
-let totalSeconds = 300;
-
-// Mantra Variables
-let mantraCounter = 0;
-
-// Quotes
-const quotes = [
-    "The mind is everything. What you think, you become.",
-    "Yoga is the journey of the self, through the self, to the self.",
-    "When meditation is mastered, the mind is unwavering like a flame.",
-    "In the midst of movement and chaos, keep stillness inside of you.",
-    "Quiet the mind, and the soul will speak.",
-    "Meditation brings wisdom; lack of meditation leaves ignorance.",
-    "Peace comes from within. Do not seek it without.",
-    "The present moment is filled with joy and happiness.",
-    "Silence is not the absence of sound, but the absence of self."
-];
-
-// Sound Functions
 document.getElementById('omSound').addEventListener('click', function() {
     playSound('om', this);
 });
@@ -116,13 +134,12 @@ document.getElementById('stopSound').addEventListener('click', () => {
     document.getElementById('stopSound').style.display = 'none';
 });
 
-document.getElementById('volumeSlider').addEventListener('input', (e) => {
-    if (currentAudio && currentAudio.gainNode) {
-        currentAudio.gainNode.gain.value = e.target.value / 100;
-    }
-});
+// Breathing
+let breathingActive = false;
+let breathCounter = 0;
+let breathTimeSeconds = 0;
+let breathTimeInterval;
 
-// Breathing Exercise
 document.getElementById('breathBtn').addEventListener('click', function() {
     if (!breathingActive) {
         startBreathing();
@@ -154,7 +171,7 @@ function breatheCycle() {
     
     if (!breathingActive) return;
     
-    text.textContent = 'Breathe In';
+    text.textContent = 'Inhale';
     circle.classList.add('breathe-in');
     circle.classList.remove('breathe-out');
     
@@ -164,7 +181,7 @@ function breatheCycle() {
         
         setTimeout(() => {
             if (!breathingActive) return;
-            text.textContent = 'Breathe Out';
+            text.textContent = 'Exhale';
             circle.classList.add('breathe-out');
             circle.classList.remove('breathe-in');
             
@@ -191,6 +208,12 @@ function stopBreathing() {
 }
 
 // Timer
+let timerActive = false;
+let timerInterval;
+let timerSeconds = 300;
+let selectedMinutes = 5;
+let totalSeconds = 300;
+
 function setTimer(mins, button) {
     if (timerActive) return;
     selectedMinutes = mins;
@@ -199,7 +222,7 @@ function setTimer(mins, button) {
     updateTimerDisplay();
     updateProgressRing();
     
-    document.querySelectorAll('.timer-option').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.time-pill').forEach(b => b.classList.remove('active'));
     button.classList.add('active');
 }
 
@@ -227,7 +250,7 @@ function startTimer() {
         
         if (timerSeconds <= 0) {
             stopTimer();
-            document.getElementById('timerDisplay').textContent = 'Complete 🙏';
+            document.getElementById('timerDisplay').textContent = 'Complete';
             document.getElementById('timerBtn').textContent = 'Start Meditation';
             setTimeout(() => {
                 timerSeconds = selectedMinutes * 60;
@@ -252,7 +275,7 @@ function updateTimerDisplay() {
 }
 
 function updateProgressRing() {
-    const circumference = 2 * Math.PI * 90;
+    const circumference = 2 * Math.PI * 100;
     const progress = (totalSeconds - timerSeconds) / totalSeconds;
     const offset = circumference * (1 - progress);
     document.getElementById('progressCircle').style.strokeDashoffset = offset;
@@ -260,7 +283,9 @@ function updateProgressRing() {
 
 updateProgressRing();
 
-// Mantra Counter
+// Mantra
+let mantraCounter = 0;
+
 document.getElementById('mantraBtn').addEventListener('click', () => {
     mantraCounter++;
     const countEl = document.getElementById('mantraCount');
@@ -273,7 +298,7 @@ document.getElementById('mantraBtn').addEventListener('click', () => {
     document.getElementById('malaRemaining').textContent = Math.max(108 - mantraCounter, 0);
     
     if (mantraCounter === 108) {
-        setTimeout(() => alert('🎉 Mala complete! 108 mantras chanted 🙏'), 200);
+        setTimeout(() => alert('🎉 108 mantras complete! 🙏'), 200);
     }
 });
 
@@ -285,6 +310,16 @@ document.getElementById('resetMantra').addEventListener('click', () => {
 });
 
 // Quotes
+const quotes = [
+    "The mind is everything. What you think, you become.",
+    "Yoga is the journey of the self, through the self, to the self.",
+    "When meditation is mastered, the mind is unwavering like a flame.",
+    "In the midst of movement and chaos, keep stillness inside of you.",
+    "Quiet the mind, and the soul will speak.",
+    "Peace comes from within. Do not seek it without.",
+    "Silence is not the absence of sound, but the absence of self."
+];
+
 function showRandomQuote() {
     const quote = quotes[Math.floor(Math.random() * quotes.length)];
     document.getElementById('dailyQuote').textContent = quote;
@@ -295,7 +330,5 @@ showRandomQuote();
 
 // Service Worker
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js')
-        .then(reg => console.log('SW registered'))
-        .catch(err => console.log('SW failed'));
+    navigator.serviceWorker.register('sw.js');
 }
