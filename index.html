@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#000000">
-    <meta name="description" content="A peaceful offline space for reflection">
+    <meta name="description" content="Shanti - A peaceful offline sanctuary for meditation and mindfulness">
     <title>Shanti - Offline Sanctuary</title>
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="style.css">
@@ -12,247 +12,266 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 </head>
 <body>
-    <!-- SVG Filter for Liquid Glass -->
-    <svg style="position: absolute; width: 0; height: 0;">
-        <defs>
-            <filter id="liquid-glass">
-                <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="3" result="noise"/>
-                <feDisplacementMap in="SourceGraphic" in2="noise" scale="20" xChannelSelector="R" yChannelSelector="G"/>
-                <feGaussianBlur stdDeviation="0.5"/>
-            </filter>
-        </defs>
-    </svg>
+    <!-- Modern Progress Bar -->
+    <div class="progress-indicator" id="progressIndicator">
+        <div class="progress-dots">
+            <div class="dot" data-section="0"></div>
+            <div class="dot" data-section="1"></div>
+            <div class="dot" data-section="2"></div>
+            <div class="dot" data-section="3"></div>
+            <div class="dot" data-section="4"></div>
+            <div class="dot" data-section="5"></div>
+            <div class="dot" data-section="6"></div>
+        </div>
+        <div class="progress-line">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+    </div>
 
     <!-- Offline Prompt -->
     <div class="offline-prompt" id="offlinePrompt">
-        <div class="liquid-glass-card">
-            <div class="glass-highlight"></div>
-            <div class="offline-content">
-                <div class="offline-icon-wrapper">
-                    <div class="pulse-ring"></div>
-                    <div class="pulse-ring pulse-ring-delayed"></div>
-                    <div class="airplane-icon">✈️</div>
-                </div>
-                <h2 class="offline-title">Embrace the Disconnect</h2>
-                <p class="offline-description">
-                    To begin your journey within, please enable airplane mode
-                </p>
-                <div class="instruction-pills">
-                    <div class="pill">Swipe Down</div>
-                    <div class="pill">Airplane Mode</div>
-                    <div class="pill">Return</div>
-                </div>
+        <div class="prompt-card">
+            <div class="prompt-glow"></div>
+            
+            <!-- Premium Airplane Icon -->
+            <div class="airplane-container">
+                <svg class="airplane-svg" viewBox="0 0 120 120">
+                    <!-- Animated signal waves -->
+                    <g class="signal-waves">
+                        <path class="signal-wave signal-1" d="M 20 40 Q 30 35 40 40" stroke-width="2.5" fill="none"/>
+                        <path class="signal-wave signal-2" d="M 15 30 Q 30 20 45 30" stroke-width="2.5" fill="none"/>
+                        <path class="signal-wave signal-3" d="M 80 40 Q 90 35 100 40" stroke-width="2.5" fill="none"/>
+                        <path class="signal-wave signal-4" d="M 75 30 Q 90 20 105 30" stroke-width="2.5" fill="none"/>
+                    </g>
+                    
+                    <!-- Airplane body -->
+                    <g class="airplane-body">
+                        <path d="M 60 50 L 70 35 L 85 35 L 75 50 Z" class="wing-right"/>
+                        <path d="M 60 50 L 50 35 L 35 35 L 45 50 Z" class="wing-left"/>
+                        <ellipse cx="60" cy="55" rx="8" ry="20" class="fuselage"/>
+                        <path d="M 56 70 L 60 80 L 64 70 Z" class="tail"/>
+                        <circle cx="60" cy="50" r="4" class="cockpit"/>
+                    </g>
+                    
+                    <!-- Glowing aura -->
+                    <circle cx="60" cy="55" r="35" class="airplane-aura"/>
+                </svg>
+                
+                <!-- Floating particles -->
+                <div class="particle particle-1"></div>
+                <div class="particle particle-2"></div>
+                <div class="particle particle-3"></div>
+            </div>
+            
+            <h2 class="prompt-title">Embrace Stillness</h2>
+            <p class="prompt-text">Enable airplane mode to begin your journey</p>
+            <div class="steps-row">
+                <span class="step">Swipe Down</span>
+                <span class="divider">•</span>
+                <span class="step">Airplane Mode</span>
+                <span class="divider">•</span>
+                <span class="step">Return</span>
             </div>
         </div>
     </div>
 
     <!-- Main Content -->
-    <div class="main-content" id="mainContent" style="display: none;">
+    <div class="snap-container" id="mainContent" style="display: none;">
         
-        <!-- Hero Section -->
-        <section class="hero-section">
-            <div class="hero-content">
-                <div class="om-large">ॐ</div>
-                <h1 class="hero-title">Shanti</h1>
-                <p class="hero-subtitle">Inner peace awaits</p>
+        <!-- Hero -->
+        <section class="snap-section hero-snap" data-section="0">
+            <div class="content-center">
+                <div class="om-huge">ॐ</div>
+                <h1 class="hero-h1">Shanti</h1>
+                <p class="hero-p">Discover peace in disconnection</p>
             </div>
         </section>
 
-        <!-- Pinned Introduction -->
-        <section class="pinned-intro">
-            <div class="intro-content">
-                <h2 class="intro-title">Digital Detox</h2>
-                <p class="intro-text">In the space between online and offline, we find ourselves</p>
-            </div>
-        </section>
-
-        <!-- Sound Section with Pin -->
-        <section class="sound-section">
-            <div class="section-wrapper">
-                <div class="liquid-glass-card feature-card">
-                    <div class="glass-highlight"></div>
-                    <div class="card-content">
-                        <div class="section-badge">Sounds</div>
-                        <h2 class="feature-title">Ambient Meditation</h2>
-                        <p class="feature-subtitle">Immerse yourself in sacred frequencies</p>
-                        
-                        <div class="sound-grid">
-                            <button class="sound-tile" id="omSound">
-                                <div class="tile-glow"></div>
-                                <span class="sound-emoji">🕉️</span>
-                                <span class="sound-name">Om</span>
-                            </button>
-                            <button class="sound-tile" id="bellSound">
-                                <div class="tile-glow"></div>
-                                <span class="sound-emoji">🔔</span>
-                                <span class="sound-name">Bell</span>
-                            </button>
-                            <button class="sound-tile" id="rainSound">
-                                <div class="tile-glow"></div>
-                                <span class="sound-emoji">🌧️</span>
-                                <span class="sound-name">Rain</span>
-                            </button>
-                        </div>
-                        
-                        <button class="stop-sound" id="stopSound" style="display: none;">Stop Sound</button>
-                        
-                        <div class="volume-control">
-                            <span class="control-label">Volume</span>
-                            <div class="slider-track">
-                                <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="50">
-                                <div class="slider-fill" id="sliderFill"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Breathing Section -->
-        <section class="breathing-section">
-            <div class="section-wrapper">
-                <div class="liquid-glass-card feature-card">
-                    <div class="glass-highlight"></div>
-                    <div class="card-content">
-                        <div class="section-badge">Breathe</div>
-                        <h2 class="feature-title">Pranayama</h2>
-                        <p class="feature-subtitle">Follow the rhythm of your breath</p>
-                        
-                        <div class="breath-container">
-                            <div class="breath-circle" id="breathCircle">
-                                <div class="breath-rings"></div>
-                                <div class="breath-core"></div>
-                                <p class="breath-text" id="breathText">Begin</p>
-                            </div>
-                        </div>
-                        
-                        <button class="primary-btn" id="breathBtn">Start Breathing</button>
-                        
-                        <div class="stats-grid">
-                            <div class="stat-card">
-                                <div class="stat-value" id="breathCount">0</div>
-                                <div class="stat-label">Cycles</div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-value" id="breathTime">00:00</div>
-                                <div class="stat-label">Duration</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Timer Section -->
-        <section class="timer-section">
-            <div class="section-wrapper">
-                <div class="liquid-glass-card feature-card">
-                    <div class="glass-highlight"></div>
-                    <div class="card-content">
-                        <div class="section-badge">Meditate</div>
-                        <h2 class="feature-title">Dhyana</h2>
-                        <p class="feature-subtitle">Set your meditation timer</p>
-                        
-                        <div class="timer-display-wrapper">
-                            <div class="timer-display" id="timerDisplay">05:00</div>
-                            <svg class="timer-ring" width="220" height="220">
-                                <circle class="timer-ring-bg" cx="110" cy="110" r="100"/>
-                                <circle class="timer-ring-progress" id="progressCircle" cx="110" cy="110" r="100"/>
+        <!-- Sound -->
+        <section class="snap-section" data-section="1">
+            <div class="content-center">
+                <div class="card">
+                    <div class="card-glow"></div>
+                    <span class="label">Sounds</span>
+                    <h2 class="h2">Sacred Frequencies</h2>
+                    <p class="p">Immerse in ambient meditation</p>
+                    
+                    <div class="grid-3">
+                        <!-- Om Sound -->
+                        <button class="tile-btn" id="omSound">
+                            <div class="tile-glow"></div>
+                            <svg class="tile-svg" viewBox="0 0 100 100">
+                                <circle class="ripple ripple-anim" cx="50" cy="50" r="20"/>
+                                <circle class="ripple ripple-anim ripple-2" cx="50" cy="50" r="30"/>
+                                <circle class="ripple ripple-anim ripple-3" cx="50" cy="50" r="40"/>
+                                <text x="50" y="60" text-anchor="middle" class="om-text">ॐ</text>
                             </svg>
-                        </div>
+                            <span class="tile-text">Om</span>
+                        </button>
                         
-                        <div class="timer-options">
-                            <button class="time-pill active" id="timer5">5 min</button>
-                            <button class="time-pill" id="timer10">10 min</button>
-                            <button class="time-pill" id="timer15">15 min</button>
-                            <button class="time-pill" id="timer20">20 min</button>
-                        </div>
+                        <!-- Bell Sound -->
+                        <button class="tile-btn" id="bellSound">
+                            <div class="tile-glow"></div>
+                            <svg class="tile-svg bell-svg" viewBox="0 0 100 100">
+                                <g class="bell-group">
+                                    <path class="bell-body" d="M50 30 C42 30 38 34 38 42 L38 54 C38 62 34 66 30 70 L70 70 C66 66 62 62 62 54 L62 42 C62 34 58 30 50 30 Z"/>
+                                    <ellipse class="bell-rim" cx="50" cy="70" rx="20" ry="3"/>
+                                    <circle class="bell-clapper" cx="50" cy="74" r="2.5"/>
+                                </g>
+                                <path class="bell-wave bell-wave-anim bell-wave-1" d="M 20 50 Q 24 46 28 50"/>
+                                <path class="bell-wave bell-wave-anim bell-wave-2" d="M 72 50 Q 76 46 80 50"/>
+                            </svg>
+                            <span class="tile-text">Bell</span>
+                        </button>
                         
-                        <button class="primary-btn" id="timerBtn">Start Meditation</button>
+                        <!-- Rain Sound -->
+                        <button class="tile-btn" id="rainSound">
+                            <div class="tile-glow"></div>
+                            <svg class="tile-svg" viewBox="0 0 100 100">
+                                <path class="rain-cloud" d="M30 35 Q25 30 25 25 Q25 20 30 20 Q35 15 40 20 Q45 15 50 20 Q55 15 60 20 Q65 20 70 25 Q70 30 65 35 Z"/>
+                                <line class="rain-drop rain-drop-anim rain-drop-1" x1="30" y1="45" x2="30" y2="60" stroke-width="2"/>
+                                <line class="rain-drop rain-drop-anim rain-drop-2" x1="45" y1="50" x2="45" y2="65" stroke-width="2"/>
+                                <line class="rain-drop rain-drop-anim rain-drop-3" x1="60" y1="45" x2="60" y2="60" stroke-width="2"/>
+                                <circle class="rain-ripple rain-ripple-anim rain-ripple-1" cx="30" cy="70" r="5"/>
+                                <circle class="rain-ripple rain-ripple-anim rain-ripple-2" cx="45" cy="75" r="5"/>
+                                <circle class="rain-ripple rain-ripple-anim rain-ripple-3" cx="60" cy="70" r="5"/>
+                            </svg>
+                            <span class="tile-text">Rain</span>
+                        </button>
+                    </div>
+                    
+                    <button class="btn-danger" id="stopSound" style="display: none;">Stop Sound</button>
+                    
+                    <div class="vol-row">
+                        <span class="vol-text">Volume</span>
+                        <div class="slider-wrap">
+                            <input type="range" id="volumeSlider" min="0" max="100" value="50">
+                            <div class="slider-bg"></div>
+                            <div class="slider-active" id="sliderActive"></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Mantra Section -->
-        <section class="mantra-section">
-            <div class="section-wrapper">
-                <div class="liquid-glass-card feature-card">
-                    <div class="glass-highlight"></div>
-                    <div class="card-content">
-                        <div class="section-badge">Chant</div>
-                        <h2 class="feature-title">Japa Mala</h2>
-                        <p class="feature-subtitle">108 sacred repetitions</p>
-                        
-                        <div class="mantra-display">
-                            <div class="mantra-count" id="mantraCount">0</div>
-                            <div class="mantra-om">ॐ</div>
-                            <div class="mantra-text">Om Shanti</div>
+        <!-- Breathe -->
+        <section class="snap-section" data-section="2">
+            <div class="content-center">
+                <div class="card">
+                    <div class="card-glow"></div>
+                    <span class="label">Breathe</span>
+                    <h2 class="h2">Pranayama</h2>
+                    <p class="p">Sync with your natural rhythm</p>
+                    
+                    <div class="breath-box">
+                        <div class="breath-orb" id="breathOrb">
+                            <div class="orb-light"></div>
+                            <div class="orb-ring"></div>
+                            <p class="orb-txt" id="breathText">Begin</p>
                         </div>
-                        
-                        <div class="mala-track">
-                            <div class="mala-fill" id="malaProgress">
-                                <div class="mala-shine"></div>
-                            </div>
+                    </div>
+                    
+                    <button class="btn-main" id="breathBtn">Start</button>
+                    
+                    <div class="stats-row">
+                        <div class="stat-box">
+                            <div class="stat-big" id="breathCount">0</div>
+                            <div class="stat-small">Cycles</div>
                         </div>
-                        <div class="mala-info"><span id="malaRemaining">108</span> remaining</div>
-                        
-                        <div class="btn-group">
-                            <button class="primary-btn flex-btn" id="mantraBtn">Chant</button>
-                            <button class="secondary-btn flex-btn" id="resetMantra">Reset</button>
+                        <div class="stat-box">
+                            <div class="stat-big" id="breathTime">00:00</div>
+                            <div class="stat-small">Time</div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Quote Section -->
-        <section class="quote-section">
-            <div class="section-wrapper">
-                <div class="liquid-glass-card feature-card">
-                    <div class="glass-highlight"></div>
-                    <div class="card-content">
-                        <div class="section-badge">Wisdom</div>
-                        <h2 class="feature-title">Daily Reflection</h2>
-                        <blockquote class="quote-text" id="dailyQuote"></blockquote>
-                        <button class="secondary-btn" id="newQuote">New Quote</button>
+        <!-- Timer -->
+        <section class="snap-section" data-section="3">
+            <div class="content-center">
+                <div class="card">
+                    <div class="card-glow"></div>
+                    <span class="label">Meditate</span>
+                    <h2 class="h2">Dhyana</h2>
+                    <p class="p">Set your meditation duration</p>
+                    
+                    <div class="timer-box">
+                        <svg class="timer-svg" width="240" height="240">
+                            <circle class="timer-bg" cx="120" cy="120" r="110"/>
+                            <circle class="timer-progress" id="timerProgress" cx="120" cy="120" r="110"/>
+                        </svg>
+                        <div class="timer-text" id="timerDisplay">05:00</div>
+                    </div>
+                    
+                    <div class="opts-row">
+                        <button class="opt-btn active" id="timer5">5</button>
+                        <button class="opt-btn" id="timer10">10</button>
+                        <button class="opt-btn" id="timer15">15</button>
+                        <button class="opt-btn" id="timer20">20</button>
+                    </div>
+                    
+                    <button class="btn-main" id="timerBtn">Start</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mantra -->
+        <section class="snap-section" data-section="4">
+            <div class="content-center">
+                <div class="card">
+                    <div class="card-glow"></div>
+                    <span class="label">Chant</span>
+                    <h2 class="h2">Japa Mala</h2>
+                    <p class="p">108 sacred repetitions</p>
+                    
+                    <div class="mantra-box">
+                        <div class="mantra-num" id="mantraCount">0</div>
+                        <div class="mantra-om">ॐ</div>
+                        <div class="mantra-txt">Om Shanti</div>
+                    </div>
+                    
+                    <div class="prog-bar">
+                        <div class="prog-fill" id="malaProgress">
+                            <div class="prog-light"></div>
+                        </div>
+                    </div>
+                    <div class="prog-txt"><span id="malaRemaining">108</span> remaining</div>
+                    
+                    <div class="btns-row">
+                        <button class="btn-main btn-half" id="mantraBtn">Chant</button>
+                        <button class="btn-alt btn-half" id="resetMantra">Reset</button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Philosophy Scroll Section -->
-        <section class="philosophy-section">
-            <div class="philosophy-pin">
-                <div class="verse-card">
-                    <p class="sanskrit">यदा यदा हि धर्मस्य ग्लानिर्भवति भारत</p>
-                    <p class="translation">Whenever dharma declines...</p>
-                </div>
-            </div>
-            <div class="philosophy-pin">
-                <div class="verse-card">
-                    <p class="philosophy-large">In silence, we find truth</p>
-                </div>
-            </div>
-            <div class="philosophy-pin">
-                <div class="verse-card">
-                    <p class="sanskrit">योगश्चित्तवृत्तिनिरोधः</p>
-                    <p class="translation">Yoga is the cessation of mind fluctuations</p>
-                </div>
-            </div>
-            <div class="philosophy-pin">
-                <div class="verse-card">
-                    <p class="philosophy-large">Peace, peace, peace</p>
-                    <p class="sanskrit-small">शान्तिः शान्तिः शान्तिः</p>
+        <!-- Quote -->
+        <section class="snap-section" data-section="5">
+            <div class="content-center">
+                <div class="card">
+                    <div class="card-glow"></div>
+                    <span class="label">Wisdom</span>
+                    <h2 class="h2">Reflection</h2>
+                    <blockquote class="quote-txt" id="dailyQuote">The mind is everything. What you think, you become.</blockquote>
+                    <button class="btn-alt" id="newQuote">New Quote</button>
                 </div>
             </div>
         </section>
 
-        <!-- Footer -->
-        <footer class="footer">
-            <p class="footer-text">You have reached the end</p>
-            <p class="footer-om">ॐ</p>
-        </footer>
+        <!-- Verses -->
+        <section class="snap-section" data-section="6">
+            <div class="content-center">
+                <div class="verse-box">
+                    <p class="verse-display" id="verseDisplay">यदा यदा हि धर्मस्य ग्लानिर्भवति भारत</p>
+                    <p class="verse-sub" id="verseSub">Whenever dharma declines</p>
+                </div>
+                <div class="footer-box">
+                    <p class="footer-txt" id="footerText">May peace be with you</p>
+                    <div class="footer-om">ॐ</div>
+                </div>
+            </div>
+        </section>
 
     </div>
 
