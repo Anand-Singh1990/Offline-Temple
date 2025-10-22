@@ -1,11 +1,11 @@
 {
-  "name": "Offline Space",
-  "short_name": "Offline",
-  "description": "A peaceful offline space for reflection",
+  "name": "Shanti - Offline Sanctuary",
+  "short_name": "Shanti",
+  "description": "A sacred offline space for reflection and inner peace",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#000000",
+  "background_color": "#1a0a00",
+  "theme_color": "#1a0a00",
   "orientation": "portrait-primary",
   "icons": [
     {
