@@ -1,63 +1,72 @@
-/* This is the new file: sw.js */
-
-const CACHE_NAME = 'offline-temple-v1';
-
-/*
-  IMPORTANT: Add ALL your files here.
-  This list tells the browser what to save.
-  '/' represents your main index.html file.
-*/
-const FILES_TO_CACHE = [
-  '/', // This caches the index.html file
-  'temple1.jpg',
-  'landscape.jpg',
-  'mountain.jpg',
-  'ocean.jpg'
-  // Add any other .css, .js, or image files here
+// Service Worker for Offline-First PWA
+const CACHE_NAME = 'sacred-offline-v1';
+const urlsToCache = [
+  '/',
+  '/index.html'
 ];
 
-// 1. On "install" (when the user first visits)
-self.addEventListener('install', (evt) => {
-  console.log('[ServiceWorker] Install');
-  
-  // We wait until the cache is open and all files are added
-  evt.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      console.log('[ServiceWorker] Caching app shell');
-      return cache.addAll(FILES_TO_CACHE);
-    })
+// Install event - cache all necessary files
+self.addEventListener('install', event => {
+  console.log('Service Worker installing...');
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => {
+        console.log('Opened cache');
+        return cache.addAll(urlsToCache);
+      })
+      .then(() => self.skipWaiting()) // Activate immediately
   );
-
-  self.skipWaiting();
 });
 
-// 2. On "activate" (when the service worker starts)
-self.addEventListener('activate', (evt) => {
-  console.log('[ServiceWorker] Activate');
-  // This removes any old caches
-  evt.waitUntil(
-    caches.keys().then((keyList) => {
-      return Promise.all(keyList.map((key) => {
-        if (key !== CACHE_NAME) {
-          console.log('[ServiceWorker] Removing old cache', key);
-          return caches.delete(key);
+// Activate event - clean up old caches
+self.addEventListener('activate', event => {
+  console.log('Service Worker activating...');
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheName !== CACHE_NAME) {
+            console.log('Deleting old cache:', cacheName);
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    }).then(() => self.clients.claim()) // Take control immediately
+  );
+});
+
+// Fetch event - serve from cache, fallback to network
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => {
+        // Cache hit - return response
+        if (response) {
+          return response;
         }
-      }));
-    })
-  );
-  self.clients.claim();
-});
 
-// 3. On "fetch" (when the page tries to load any file)
-self.addEventListener('fetch', (evt) => {
-  console.log('[ServiceWorker] Fetch', evt.request.url);
-  // This is the "offline-first" part.
-  // It tries to find the file in the cache *first*.
-  evt.respondWith(
-    caches.match(evt.request).then((response) => {
-      // If it's in the cache, return it.
-      // If not, try to get it from the network.
-      return response || fetch(evt.request);
-    })
+        // Clone the request
+        const fetchRequest = event.request.clone();
+
+        return fetch(fetchRequest).then(response => {
+          // Check if valid response
+          if (!response || response.status !== 200 || response.type !== 'basic') {
+            return response;
+          }
+
+          // Clone the response
+          const responseToCache = response.clone();
+
+          caches.open(CACHE_NAME)
+            .then(cache => {
+              cache.put(event.request, responseToCache);
+            });
+
+          return response;
+        }).catch(() => {
+          // If both cache and network fail, return the cached index
+          return caches.match('/index.html');
+        });
+      })
   );
 });
