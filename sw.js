@@ -1,4 +1,4 @@
-const CACHE_NAME = 'shanti-offline-v4-networkfirst';
+const CACHE_NAME = 'shanti-offline-v5-fixed';
 const urlsToCache = [
   './',
   './index.html',

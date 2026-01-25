@@ -50,7 +50,7 @@ if (savedPattern) {
 
 // --- Connectivity & Offline Prompt ---
 function checkConnectivity() {
-    const isOnline = navigator.onLine; // Simple check, can be enhanced
+    const isOnline = navigator.onLine;
     const offlinePrompt = document.getElementById('offlinePrompt');
     const mainContent = document.getElementById('mainContent');
     const progressIndicator = document.getElementById('progressIndicator');
@@ -59,16 +59,12 @@ function checkConnectivity() {
         offlinePrompt.style.display = 'flex';
         mainContent.style.display = 'none';
         progressIndicator.classList.remove('visible');
+        if (onlineManager) onlineManager.showStats();
     } else {
         offlinePrompt.style.display = 'none';
         mainContent.style.display = 'block';
         setTimeout(initAnimations, 100);
-
-        // Auto-scroll to top when entering offline mode
         mainContent.scrollTop = 0;
-    } else {
-        // Coming back online?
-        if (onlineManager) onlineManager.showStats(); // Refresh stats
     }
 }
 
