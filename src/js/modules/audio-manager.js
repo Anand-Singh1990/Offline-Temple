@@ -4,6 +4,32 @@ export class AudioManager {
         this.activeSounds = new Map();
         this.masterVolume = 0.5;
         this.isMuted = false;
+        this.isUnlocked = false;
+        this.setupMobileUnlock();
+    }
+
+    setupMobileUnlock() {
+        // Mobile browsers require user interaction to unlock AudioContext
+        const unlock = () => {
+            if (this.isUnlocked) return;
+
+            this.ctx.resume().then(() => {
+                // Play silent buffer to unlock
+                const buffer = this.ctx.createBuffer(1, 1, 22050);
+                const source = this.ctx.createBufferSource();
+                source.buffer = buffer;
+                source.connect(this.ctx.destination);
+                source.start(0);
+
+                this.isUnlocked = true;
+                console.log('AudioContext unlocked');
+            });
+        };
+
+        // Listen for first user interaction
+        ['touchstart', 'touchend', 'click', 'keydown'].forEach(event => {
+            document.addEventListener(event, unlock, { once: true, passive: true });
+        });
     }
 
     start() {
@@ -154,6 +180,53 @@ export class AudioManager {
         whiteNoise.start();
 
         soundObj.stop = () => whiteNoise.stop();
+    }
+
+    createForestSound(soundObj) {
+        // Brown noise (deeper than rain) with lowpass for forest ambience
+        const bufferSize = 2 * this.ctx.sampleRate;
+        const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const output = noiseBuffer.getChannelData(0);
+
+        // Generate brown noise (integrated white noise)
+        let lastOut = 0;
+        for (let i = 0; i < bufferSize; i++) {
+            const white = Math.random() * 2 - 1;
+            output[i] = (lastOut + (0.02 * white)) / 1.02;
+            lastOut = output[i];
+            output[i] *= 3.5; // Amplify
+        }
+
+        const brownNoise = this.ctx.createBufferSource();
+        brownNoise.buffer = noiseBuffer;
+        brownNoise.loop = true;
+
+        // Lowpass filter for deep forest rumble
+        const lowpass = this.ctx.createBiquadFilter();
+        lowpass.type = 'lowpass';
+        lowpass.frequency.value = 400;
+        lowpass.Q.value = 1;
+
+        // Add occasional bird chirps effect with subtle filtering
+        const highpass = this.ctx.createBiquadFilter();
+        highpass.type = 'highpass';
+        highpass.frequency.value = 2000;
+        highpass.Q.value = 0.3;
+
+        const birdGain = this.ctx.createGain();
+        birdGain.gain.value = 0.15;
+
+        brownNoise.connect(lowpass);
+        lowpass.connect(soundObj.gainNode);
+
+        // Optional: birds layer (subtle)
+        brownNoise.connect(highpass);
+        highpass.connect(birdGain);
+        birdGain.connect(soundObj.gainNode);
+
+        brownNoise.start();
+
+        soundObj.stop = () => brownNoise.stop();
     }
 
     playChant(callback) {

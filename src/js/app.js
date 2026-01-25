@@ -63,6 +63,10 @@ function checkConnectivity() {
     } else {
         offlinePrompt.style.display = 'none';
         mainContent.style.display = 'block';
+
+        // Resume audio context for offline mode
+        audioManager.start();
+
         setTimeout(initAnimations, 100);
         mainContent.scrollTop = 0;
     }
