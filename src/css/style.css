@@ -133,7 +133,9 @@ body {
 }
 
 @keyframes rotate {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* Premium Airplane Icon */
@@ -156,8 +158,15 @@ body {
 }
 
 @keyframes fadeInOut {
-    0%, 100% { opacity: 0; }
-    50% { opacity: 1; }
+
+    0%,
+    100% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
 }
 
 .signal-wave {
@@ -165,14 +174,34 @@ body {
     stroke-linecap: round;
 }
 
-.signal-1 { animation: signalPulse 2s ease-in-out infinite; }
-.signal-2 { animation: signalPulse 2s ease-in-out infinite 0.5s; }
-.signal-3 { animation: signalPulse 2s ease-in-out infinite 1s; }
-.signal-4 { animation: signalPulse 2s ease-in-out infinite 1.5s; }
+.signal-1 {
+    animation: signalPulse 2s ease-in-out infinite;
+}
+
+.signal-2 {
+    animation: signalPulse 2s ease-in-out infinite 0.5s;
+}
+
+.signal-3 {
+    animation: signalPulse 2s ease-in-out infinite 1s;
+}
+
+.signal-4 {
+    animation: signalPulse 2s ease-in-out infinite 1.5s;
+}
 
 @keyframes signalPulse {
-    0%, 100% { opacity: 0; transform: translateY(0); }
-    50% { opacity: 1; transform: translateY(-5px); }
+
+    0%,
+    100% {
+        opacity: 0;
+        transform: translateY(0);
+    }
+
+    50% {
+        opacity: 1;
+        transform: translateY(-5px);
+    }
 }
 
 .airplane-body {
@@ -180,11 +209,21 @@ body {
 }
 
 @keyframes airplaneFly {
-    0%, 100% { transform: translate(0, 0); }
-    50% { transform: translate(0, -10px); }
+
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+
+    50% {
+        transform: translate(0, -10px);
+    }
 }
 
-.wing-right, .wing-left, .fuselage, .tail {
+.wing-right,
+.wing-left,
+.fuselage,
+.tail {
     fill: var(--accent);
 }
 
@@ -201,8 +240,17 @@ body {
 }
 
 @keyframes auraGlow {
-    0%, 100% { opacity: 0; r: 35; }
-    50% { opacity: 0.3; r: 42; }
+
+    0%,
+    100% {
+        opacity: 0;
+        r: 35;
+    }
+
+    50% {
+        opacity: 0.3;
+        r: 42;
+    }
 }
 
 .particle {
@@ -233,8 +281,17 @@ body {
 }
 
 @keyframes floatParticle {
-    0%, 100% { opacity: 0; transform: translateY(0) scale(1); }
-    50% { opacity: 1; transform: translateY(-20px) scale(1.2); }
+
+    0%,
+    100% {
+        opacity: 0;
+        transform: translateY(0) scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: translateY(-20px) scale(1.2);
+    }
 }
 
 .prompt-title {
@@ -307,10 +364,9 @@ body {
     text-align: center;
 }
 
-.om-huge {
-    font-size: clamp(100px, 16vw, 160px);
-    opacity: 0.12;
-    margin-bottom: 20px;
+/* Old .om-huge replaced by Divine Animation section at bottom */
+.om-huge-legacy-placeholder {
+    display: none;
 }
 
 .hero-h1 {
@@ -458,6 +514,7 @@ body {
         opacity: 1;
         stroke-width: 3;
     }
+
     100% {
         r: 45;
         opacity: 0;
@@ -478,12 +535,24 @@ body {
 }
 
 @keyframes bellRing {
-    0%, 100% { transform: rotate(0deg); }
-    25% { transform: rotate(-8deg); }
-    75% { transform: rotate(8deg); }
+
+    0%,
+    100% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(-8deg);
+    }
+
+    75% {
+        transform: rotate(8deg);
+    }
 }
 
-.bell-body, .bell-rim, .bell-clapper {
+.bell-body,
+.bell-rim,
+.bell-clapper {
     fill: var(--accent);
 }
 
@@ -504,6 +573,7 @@ body {
         opacity: 1;
         transform: scale(1);
     }
+
     100% {
         opacity: 0;
         transform: scale(1.6);
@@ -534,9 +604,11 @@ body {
         opacity: 0;
         transform: translateY(-10px);
     }
+
     50% {
         opacity: 1;
     }
+
     100% {
         opacity: 0;
         transform: translateY(10px);
@@ -564,6 +636,7 @@ body {
         opacity: 1;
         stroke-width: 2;
     }
+
     100% {
         r: 10;
         opacity: 0;
@@ -720,7 +793,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform var(--breath-duration, 4s) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .orb-light {
@@ -730,7 +803,7 @@ body {
     background: radial-gradient(circle, var(--glow), transparent 70%);
     filter: blur(30px);
     opacity: 0.3;
-    transition: all 4s ease;
+    transition: all var(--breath-duration, 4s) ease;
 }
 
 .orb-ring {
@@ -922,7 +995,9 @@ body {
 }
 
 @keyframes slideLight {
-    to { left: 200%; }
+    to {
+        left: 200%;
+    }
 }
 
 .prog-txt {
@@ -986,46 +1061,46 @@ body {
     .progress-indicator {
         right: 15px;
     }
-    
+
     .dot {
         width: 8px;
         height: 8px;
     }
-    
+
     .progress-dots {
         gap: 15px;
     }
-    
+
     .prompt-card {
         padding: 48px 32px;
     }
-    
+
     .airplane-container {
         width: 110px;
         height: 110px;
     }
-    
+
     .card {
         padding: 44px 32px;
     }
-    
+
     .breath-orb {
         width: 190px;
         height: 190px;
     }
-    
+
     .stat-big {
         font-size: 36px;
     }
-    
+
     .mantra-num {
         font-size: 70px;
     }
-    
+
     .timer-text {
         font-size: 46px;
     }
-    
+
     .verse-display {
         font-size: clamp(24px, 5vw, 36px);
     }
@@ -1035,15 +1110,15 @@ body {
     .prompt-title {
         font-size: 32px;
     }
-    
+
     .hero-h1 {
         font-size: clamp(50px, 12vw, 80px);
     }
-    
+
     .card {
         padding: 36px 24px;
     }
-    
+
     .breath-orb {
         width: 160px;
         height: 160px;
@@ -1058,16 +1133,17 @@ body {
      * preventing the text from "jiggling" during the blend.
     */
     font-family: 'SF Mono', 'Courier New', Courier, monospace;
-    color: #000; /* This will be the final text color */
+    color: #000;
+    /* This will be the final text color */
 }
 
 /* This is the wrapper for each character stack */
 .blend-char {
     display: inline-block;
     position: relative;
-    
+
     /* This preserves spaces, which is vital */
-    white-space: pre; 
+    white-space: pre;
 }
 
 /* These are the 'from' and 'to' spans inside the wrapper */
@@ -1081,10 +1157,300 @@ body {
 
 /* Style the 'to' (new) character */
 .blend-char .to {
-    color: #000; /* Your main text color */
+    color: #000;
+    /* Your main text color */
 }
 
 /* Style the 'from' (old) character */
 .blend-char .from {
-    color: #aaa; /* A muted/gray color for the text fading out */
+    color: #aaa;
+    /* A muted/gray color for the text fading out */
+}
+
+/* ==================== NEW FEATURES ==================== */
+.select-pattern {
+    width: 100%;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: #fff;
+    font-family: inherit;
+    font-size: 14px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    outline: none;
+}
+
+.select-pattern option {
+    background: #1a1a1a;
+    color: #fff;
+}
+
+/* Forest Icon specific tweaks if needed */
+.forest-svg {
+    /* reuse tile-svg styles */
+}
+
+/* ==================== ONLINE HOME PAGE IMPROVEMENTS ==================== */
+
+/* Dynamic Background */
+.online-bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+}
+
+.star {
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+    opacity: 0.5;
+    animation: twinkle linear infinite;
+}
+
+@keyframes twinkle {
+    0% {
+        opacity: 0.3;
+        transform: scale(0.8);
+    }
+
+    50% {
+        opacity: 0.8;
+        transform: scale(1.1);
+    }
+
+    100% {
+        opacity: 0.3;
+        transform: scale(0.8);
+    }
+}
+
+/* Card 3D Effect */
+.prompt-card {
+    transition: transform 0.1s ease-out;
+    /* Smooth follow */
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+/* Airplane Container Smoothness */
+.airplane-container {
+    transition: transform 0.1s ease-out;
+}
+
+/* Add a "Preview" Button if we want */
+.btn-preview {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-dim);
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-preview:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* Mantra Auto Toggle */
+.toggle-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.toggle-label {
+    font-size: 13px;
+    color: var(--text-dim);
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: .4s;
+    border-radius: 20px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked+.slider {
+    background-color: var(--accent);
+}
+
+input:checked+.slider:before {
+    transform: translateX(20px);
+}
+
+/* ==================== HOME PAGE REFINEMENTS ==================== */
+.online-stats {
+    background: rgba(255, 149, 0, 0.08);
+    /* Accent highlight */
+    border: 1px solid rgba(255, 149, 0, 0.2);
+    border-radius: 12px;
+    padding: 15px;
+    margin-top: 25px;
+    text-align: center;
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Ensure prompt text is platform neutral */
+.prompt-text {
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.5;
+}
+
+/* Refined steps row for better wrapping */
+.steps-row {
+    gap: 15px;
+}
+
+/* ==================== COLOR HARMONY ==================== */
+
+/* Update Online Background to be deeper, less generic 'sky' */
+.online-bg {
+    background: radial-gradient(ellipse at bottom, #0F172A 0%, #020617 100%);
+}
+
+/* Glassmorphism for the Prompt Card */
+.prompt-card {
+    background: rgba(15, 23, 42, 0.6);
+    /* Semi-transparent dark blue/slate */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* Make the airplane waves blend better */
+.signal-wave {
+    stroke: rgba(255, 149, 0, 0.8);
+    /* Slightly softer accent */
+}
+
+/* ==================== DIVINE OM ANIMATION ==================== */
+.om-huge {
+    font-size: clamp(120px, 20vw, 200px);
+    /* Restored & Increased */
+    /* Base Color & Gradient */
+    background: linear-gradient(180deg, #fff 20%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    opacity: 0.8;
+    /* Increased from 0.12 */
+
+    /* Divine Glow */
+    filter: drop-shadow(0 0 30px rgba(255, 149, 0, 0.4));
+
+    /* Animation */
+    animation: omFloat 6s ease-in-out infinite, omGlow 4s ease-in-out infinite alternate;
+    position: relative;
+    z-index: 2;
+}
+
+/* Floating Animation */
+@keyframes omFloat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+/* Breathing Glow Animation */
+@keyframes omGlow {
+    from {
+        filter: drop-shadow(0 0 20px rgba(255, 149, 0, 0.3));
+    }
+
+    to {
+        filter: drop-shadow(0 0 50px rgba(255, 149, 0, 0.8));
+        opacity: 1;
+    }
+}
+
+/* Aura / Light Rays behind OM */
+.hero-snap .content-center {
+    position: relative;
+}
+
+.om-aura {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255, 149, 0, 0.15) 0%, transparent 70%);
+    z-index: 1;
+    pointer-events: none;
+    animation: auraPulse 8s ease-in-out infinite;
+}
+
+@keyframes auraPulse {
+
+    0%,
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.5;
+    }
+
+    50% {
+        transform: translate(-50%, -50%) scale(1.5);
+        opacity: 0.8;
+    }
 }
