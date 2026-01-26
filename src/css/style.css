@@ -335,6 +335,62 @@ body {
     font-size: 10px;
 }
 
+/* Visitor Counter */
+.visitor-count-display {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 14px;
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    animation: fadeIn 1s ease-out;
+}
+
+.vc-icon {
+    color: #4cd964;
+    /* Success green, or use accent? Green implies 'live' */
+    font-size: 10px;
+    animation: pulse 2s infinite;
+}
+
+.vc-number {
+    color: #fff;
+    font-weight: 700;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.4;
+        transform: scale(0.8);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+
+    100% {
+        opacity: 0.4;
+        transform: scale(0.8);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
 /* ==================== MAIN CONTENT ==================== */
 .snap-container {
     height: 100vh;

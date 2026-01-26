@@ -1,4 +1,5 @@
 import { DataManager } from './data-manager.js';
+import { VisitorCounter } from './visitor-counter.js';
 
 export class OnlineManager {
     constructor() {
@@ -7,6 +8,7 @@ export class OnlineManager {
         this.particleCount = 50;
         this.isOnline = navigator.onLine; // Default
         this.dataManager = new DataManager(); // Init local instance to read stats
+        this.visitorCounter = new VisitorCounter();
         this.init();
     }
 
@@ -19,6 +21,7 @@ export class OnlineManager {
     }
 
     showStats() {
+        // Local Stats
         const total = this.dataManager.get('mantraTotal') || 0;
         if (total > 0) {
             const stats = document.createElement('div');
@@ -28,6 +31,25 @@ export class OnlineManager {
             // Append to card if not already there
             if (!this.card.querySelector('.online-stats')) {
                 this.card.appendChild(stats);
+            }
+        }
+
+        // Global Stats (Visitor Count)
+        this.showGlobalStats();
+    }
+
+    async showGlobalStats() {
+        if (!this.visitorCounter) return;
+
+        const count = await this.visitorCounter.getCount();
+        if (count) {
+            const globalStats = document.createElement('div');
+            globalStats.className = 'visitor-count-display';
+            globalStats.innerHTML = `<span class="vc-icon">●</span> <span class="vc-number">${count.toLocaleString()}</span> <span class="vc-text">seekers have found peace</span>`;
+
+            // Append to card, ensuring it doesn't duplicate
+            if (!this.card.querySelector('.visitor-count-display')) {
+                this.card.appendChild(globalStats);
             }
         }
     }
